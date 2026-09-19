@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products — KinarAge</title>
+    <meta name="description" content="Explore and compare a wide range of products with prices, specs, and smart buying guides.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛒%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .page-header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 3rem 0;
+            text-align: center;
+        }
+        .page-header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .page-header p { color: var(--text-secondary); }
+        .filter-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .category-filters { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .filter-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .search-box-wrapper {
+            display: flex;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.35rem 0.75rem;
+            align-items: center;
+            width: 250px;
+        }
+        .search-box-wrapper input {
+            border: none;
+            background: transparent;
+            outline: none;
+            color: var(--text-primary);
+            width: 100%;
+            font-size: 0.875rem;
+        }
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .product-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+        .product-card-img {
+            background: var(--bg-muted);
+            height: 160px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .product-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+        .product-card h3 { font-size: 1.125rem; margin-bottom: 0.5rem; }
+        .product-price { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; }
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            background: var(--bg-muted);
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+        }
+        .product-card .primary-button { text-align: center; margin-top: auto; padding: 0.5rem 1rem; font-size: 0.875rem; }
+        .no-results { grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--text-secondary); }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container header-inner">
+        <a href="index.html" class="logo">
+            <span class="logo-icon">K</span>
+            <span class="logo-text">Kinar<span>Age</span></span>
+        </a>
+        <nav class="desktop-nav">
+            <a href="index.html">Home</a>
+            <a href="products.html" class="active">Products</a>
+            <a href="compare.html">Compare</a>
+            <a href="guides.html">Buying Guides</a>
+            <a href="about.html">About</a>
+        </nav>
+        <div class="header-actions">
+            <button class="icon-button" id="themeToggle" type="button">🌙</button>
+            <button class="icon-button mobile-menu-button" id="mobileMenuButton" type="button">☰</button>
+        </div>
+    </div>
+    <nav class="mobile-nav" id="mobileNav">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="compare.html">Compare</a>
+        <a href="guides.html">Buying Guides</a>
+        <a href="about.html">About</a>
+    </nav>
+</header>
+
+<main>
+    <div class="page-header">
+        <div class="container">
+            <h1>All Products & Prices</h1>
+            <p>আপনার পছন্দের প্রোডাক্টটি খুঁজে নিন এবং সঠিক তথ্য দিয়ে যাচাই করুন।</p>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            <div class="filter-bar">
+                <div class="category-filters" id="categoryFilters">
+                    <button class="filter-btn active" data-category="all">All</button>
+                    <button class="filter-btn" data-category="mobile">Mobile</button>
+                    <button class="filter-btn" data-category="laptop">Laptop</button>
+                    <button class="filter-btn" data-category="gadgets">Gadgets</button>
+                    <button class="filter-btn" data-category="home">Home</button>
+                </div>
+                <div class="search-box-wrapper">
+                    <span style="color: var(--text-muted); margin-right: 5px;">⌕</span>
+                    <input type="search" id="productSearchInput" placeholder="Filter products...">
+                </div>
+            </div>
+
+            <div class="product-grid" id="allProductsGrid">
+                <!-- Backend থেকে ডেটা লোড হওয়ার সময় লোডিং মেসেজ দেখাবে -->
+                <div class="no-results"><h3>লোড হচ্ছে...</h3><p>দয়া করে একটু অপেক্ষা করুন।</p></div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-grid">
+        <div class="footer-brand">
+            <a href="index.html" class="logo"><span class="logo-icon">K</span><span class="logo-text">Kinar<span>Age</span></span></a>
+            <p>কেনার আগে research করুন, compare করুন এবং smarter decision নিন।</p>
+        </div>
+        <div class="footer-column">
+            <h3>Explore</h3>
+            <a href="products.html">Products</a>
+            <a href="compare.html">Compare</a>
+            <a href="guides.html">Buying Guides</a>
+        </div>
+        <div class="footer-column">
+            <h3>Company</h3>
+            <a href="about.html">About</a>
+            <a href="#">Privacy Policy</a>
+        </div>
+        <div class="footer-column">
+            <h3>Categories</h3>
+            <a href="products.html?category=mobile">Mobile</a>
+            <a href="products.html?category=laptop">Laptop</a>
+            <a href="products.html?category=gadgets">Gadgets</a>
+        </div>
+    </div>
+    <div class="container footer-bottom">
+        <p>© 2026 KinarAge. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
+</body>
+</html>

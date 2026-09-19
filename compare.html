@@ -1,0 +1,1248 @@
+<!DOCTYPE html> <html lang="bn"> <head> <meta charset="UTF-8">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Compare Products — KinarAge</title>
+
+<meta
+    name="description"
+    content="Compare products, features, specifications, prices and ratings side-by-side."
+>
+
+<link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛒%3C/text%3E%3C/svg%3E"
+>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+    /* ==========================================
+       PAGE HEADER
+    ========================================== */
+
+    .page-header {
+        background: var(--bg-secondary);
+        border-bottom: 1px solid var(--border-color);
+        padding: 3rem 0;
+        text-align: center;
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .page-header p {
+        color: var(--text-secondary);
+    }
+
+    /* ==========================================
+       COMPARE SELECTORS
+    ========================================== */
+
+    .compare-selectors {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .selector-box {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        padding: 1.5rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+    }
+
+    .selector-box label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .selector-box select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        background: var(--bg-muted);
+        color: var(--text-primary);
+        border-radius: 8px;
+        font-size: 1rem;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .selector-box select:focus {
+        border-color: var(--accent);
+    }
+
+    /* ==========================================
+       COMPARISON TABLE
+    ========================================== */
+
+    .comparison-table-wrapper {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow-x: auto;
+        margin-bottom: 4rem;
+    }
+
+    .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        font-size: 0.95rem;
+    }
+
+    .comparison-table th {
+        background: var(--bg-secondary);
+        font-weight: 700;
+        width: 30%;
+    }
+
+    .comparison-table td {
+        width: 35%;
+    }
+
+    .comparison-table tr:last-child td,
+    .comparison-table tr:last-child th {
+        border-bottom: none;
+    }
+
+    /* ==========================================
+       PRODUCT PREVIEW
+    ========================================== */
+
+    .product-preview-cell {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .compare-icon-box {
+        font-size: 2rem;
+        background: var(--bg-muted);
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+    }
+
+    /* ==========================================
+       PLACEHOLDER
+    ========================================== */
+
+    .compare-placeholder-text {
+        color: var(--text-muted);
+        text-align: center;
+        padding: 3rem !important;
+    }
+
+    .compare-placeholder-text h3 {
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .compare-placeholder-text p {
+        margin: 0.5rem 0;
+    }
+
+    .compare-error {
+        color: #dc2626;
+    }
+
+    /* ==========================================
+       MOBILE
+    ========================================== */
+
+    @media (max-width: 768px) {
+
+        .page-header h1 {
+            font-size: 2rem;
+        }
+
+        .compare-selectors {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.85rem;
+            font-size: 0.9rem;
+        }
+
+        .product-preview-cell {
+            gap: 0.6rem;
+        }
+
+        .compare-icon-box {
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+</head> <body> <!-- ========================================== HEADER ========================================== --> <header class="site-header">
+
+<div class="container header-inner">
+
+    <a
+        href="index.html"
+        class="logo"
+        aria-label="KinarAge Home"
+    >
+        <span class="logo-icon">K</span>
+
+        <span class="logo-text">
+            Kinar<span>Age</span>
+        </span>
+    </a>
+
+    <nav
+        class="desktop-nav"
+        aria-label="Main navigation"
+    >
+        <a href="index.html">Home</a>
+
+        <a href="products.html">
+            Products
+        </a>
+
+        <a
+            href="compare.html"
+            class="active"
+        >
+            Compare
+        </a>
+
+        <a href="guides.html">
+            Buying Guides
+        </a>
+
+        <a href="about.html">
+            About
+        </a>
+    </nav>
+
+    <div class="header-actions">
+
+        <button
+            class="icon-button"
+            id="themeToggle"
+            type="button"
+            aria-label="Toggle dark mode"
+        >
+            🌙
+        </button>
+
+        <button
+            class="icon-button mobile-menu-button"
+            id="mobileMenuButton"
+            type="button"
+            aria-label="Open menu"
+            aria-expanded="false"
+        >
+            ☰
+        </button>
+
+    </div>
+
+</div>
+
+<nav
+    class="mobile-nav"
+    id="mobileNav"
+    aria-label="Mobile navigation"
+>
+    <a href="index.html">
+        Home
+    </a>
+
+    <a href="products.html">
+        Products
+    </a>
+
+    <a href="compare.html">
+        Compare
+    </a>
+
+    <a href="guides.html">
+        Buying Guides
+    </a>
+
+    <a href="about.html">
+        About
+    </a>
+</nav>
+
+</header> <!-- ========================================== MAIN ========================================== --> <main>
+
+<!-- PAGE HEADER -->
+
+<section class="page-header">
+
+    <div class="container">
+
+        <h1>
+            Product Comparison
+        </h1>
+
+        <p>
+            দুটি প্রোডাক্টের মাঝে তুলনা করে
+            আপনার জন্য সঠিক option খুঁজে নিন।
+        </p>
+
+    </div>
+
+</section>
+
+<!-- COMPARE SECTION -->
+
+<section class="section">
+
+    <div class="container">
+
+        <!-- ==================================
+             PRODUCT SELECTORS
+        =================================== -->
+
+        <div class="compare-selectors">
+
+            <!-- PRODUCT 1 -->
+
+            <div class="selector-box">
+
+                <label for="product1Select">
+                    Select Product 1
+                </label>
+
+                <select id="product1Select">
+
+                    <option value="">
+                        -- Choose Product --
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- PRODUCT 2 -->
+
+            <div class="selector-box">
+
+                <label for="product2Select">
+                    Select Product 2
+                </label>
+
+                <select id="product2Select">
+
+                    <option value="">
+                        -- Choose Product --
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <!-- ==================================
+             COMPARISON TABLE
+        =================================== -->
+
+        <div class="comparison-table-wrapper">
+
+            <table class="comparison-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Features
+                        </th>
+
+                        <th id="thProduct1">
+                            Product 1
+                        </th>
+
+                        <th id="thProduct2">
+                            Product 2
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="comparisonBody">
+
+                    <tr>
+
+                        <td
+                            colspan="3"
+                            class="compare-placeholder-text"
+                        >
+                            প্রোডাক্ট লোড হচ্ছে...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main> <!-- ========================================== FOOTER ========================================== --> <footer class="site-footer">
+
+<div class="container footer-grid">
+
+    <div class="footer-brand">
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+            <span class="logo-icon">
+                K
+            </span>
+
+            <span class="logo-text">
+                Kinar<span>Age</span>
+            </span>
+        </a>
+
+        <p>
+            কেনার আগে research করুন,
+            compare করুন এবং smarter
+            decision নিন।
+        </p>
+
+    </div>
+
+    <div class="footer-column">
+
+        <h3>
+            Explore
+        </h3>
+
+        <a href="products.html">
+            Products
+        </a>
+
+        <a href="compare.html">
+            Compare
+        </a>
+
+        <a href="guides.html">
+            Buying Guides
+        </a>
+
+    </div>
+
+    <div class="footer-column">
+
+        <h3>
+            Company
+        </h3>
+
+        <a href="about.html">
+            About
+        </a>
+
+        <a href="#">
+            Privacy Policy
+        </a>
+
+    </div>
+
+    <div class="footer-column">
+
+        <h3>
+            Categories
+        </h3>
+
+        <a href="products.html?category=mobile">
+            Mobile
+        </a>
+
+        <a href="products.html?category=laptop">
+            Laptop
+        </a>
+
+        <a href="products.html?category=gadgets">
+            Gadgets
+        </a>
+
+    </div>
+
+</div>
+
+<div class="container footer-bottom">
+
+    <p>
+        © 2026 KinarAge.
+        All rights reserved.
+    </p>
+
+</div>
+
+</footer> <!-- ========================================== JAVASCRIPT ========================================== --> <script>
+
+document.addEventListener(
+"DOMContentLoaded",
+() => {
+
+    // ==========================================
+    // CONFIG
+    // ==========================================
+
+    const API_URL =
+        "http://localhost:5000/api";
+
+    // ==========================================
+    // ELEMENTS
+    // ==========================================
+
+    const mobileMenuButton =
+        document.getElementById(
+            "mobileMenuButton"
+        );
+
+    const mobileNav =
+        document.getElementById(
+            "mobileNav"
+        );
+
+    const themeToggle =
+        document.getElementById(
+            "themeToggle"
+        );
+
+    const p1Select =
+        document.getElementById(
+            "product1Select"
+        );
+
+    const p2Select =
+        document.getElementById(
+            "product2Select"
+        );
+
+    const comparisonBody =
+        document.getElementById(
+            "comparisonBody"
+        );
+
+    const thProduct1 =
+        document.getElementById(
+            "thProduct1"
+        );
+
+    const thProduct2 =
+        document.getElementById(
+            "thProduct2"
+        );
+
+    // ==========================================
+    // ELEMENT CHECK
+    // ==========================================
+
+    if (
+        !p1Select ||
+        !p2Select ||
+        !comparisonBody ||
+        !thProduct1 ||
+        !thProduct2
+    ) {
+
+        console.error(
+            "❌ Compare page elements missing."
+        );
+
+        return;
+    }
+
+    console.log(
+        "✅ Compare page elements found."
+    );
+
+    // ==========================================
+    // MOBILE MENU
+    // ==========================================
+
+    if (
+        mobileMenuButton &&
+        mobileNav
+    ) {
+
+        mobileMenuButton.addEventListener(
+            "click",
+            () => {
+
+                const isOpen =
+                    mobileNav.classList.toggle(
+                        "open"
+                    );
+
+                mobileMenuButton.setAttribute(
+                    "aria-expanded",
+                    String(isOpen)
+                );
+
+            }
+        );
+    }
+
+    // ==========================================
+    // DARK / LIGHT MODE
+    // ==========================================
+
+    if (themeToggle) {
+
+        const savedTheme =
+            localStorage.getItem(
+                "kinarage-theme"
+            );
+
+        if (savedTheme === "dark") {
+
+            document.body.classList.add(
+                "dark"
+            );
+
+            themeToggle.textContent =
+                "☀️";
+        }
+
+        themeToggle.addEventListener(
+            "click",
+            () => {
+
+                const isDark =
+                    document.body.classList.toggle(
+                        "dark"
+                    );
+
+                localStorage.setItem(
+                    "kinarage-theme",
+                    isDark
+                        ? "dark"
+                        : "light"
+                );
+
+                themeToggle.textContent =
+                    isDark
+                        ? "☀️"
+                        : "🌙";
+
+            }
+        );
+    }
+
+    // ==========================================
+    // PRODUCTS DATA
+    // ==========================================
+
+    let productsData = [];
+
+    // ==========================================
+    // ESCAPE HTML
+    // ==========================================
+
+    function escapeHTML(value) {
+
+        return String(value ?? "")
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+    }
+
+    // ==========================================
+    // FETCH PRODUCTS
+    // ==========================================
+
+    async function fetchCompareData() {
+
+        try {
+
+            comparisonBody.innerHTML = `
+                <tr>
+                    <td
+                        colspan="3"
+                        class="compare-placeholder-text"
+                    >
+                        প্রোডাক্ট লোড হচ্ছে...
+                    </td>
+                </tr>
+            `;
+
+            console.log(
+                "🔄 Fetching:",
+                `${API_URL}/products`
+            );
+
+            // ==================================
+            // API REQUEST
+            // ==================================
+
+            const response =
+                await fetch(
+                    `${API_URL}/products`
+                );
+
+            if (!response.ok) {
+
+                throw new Error(
+                    `HTTP Error: ${response.status}`
+                );
+            }
+
+            // ==================================
+            // JSON RESPONSE
+            // ==================================
+
+            const data =
+                await response.json();
+
+            // ==================================
+            // CHECK RESPONSE
+            // ==================================
+
+            if (!Array.isArray(data)) {
+
+                throw new Error(
+                    "API response is not an array"
+                );
+            }
+
+            productsData = data;
+
+            console.log(
+                "✅ Products loaded from PostgreSQL:",
+                productsData
+            );
+
+            // ==================================
+            // CLEAR DROPDOWNS
+            // ==================================
+
+            p1Select.innerHTML = `
+                <option value="">
+                    -- Choose Product --
+                </option>
+            `;
+
+            p2Select.innerHTML = `
+                <option value="">
+                    -- Choose Product --
+                </option>
+            `;
+
+            // ==================================
+            // ADD PRODUCTS
+            // ==================================
+
+            productsData.forEach(
+                (product) => {
+
+                    const option1 =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option1.value =
+                        String(product.id);
+
+                    option1.textContent =
+                        product.name ||
+                        "Unnamed Product";
+
+                    p1Select.appendChild(
+                        option1
+                    );
+
+                    const option2 =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option2.value =
+                        String(product.id);
+
+                    option2.textContent =
+                        product.name ||
+                        "Unnamed Product";
+
+                    p2Select.appendChild(
+                        option2
+                    );
+
+                }
+            );
+
+            // ==================================
+            // URL ID
+            // compare.html?id=1
+            // ==================================
+
+            const urlParams =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+            const urlId =
+                urlParams.get("id");
+
+            if (urlId) {
+
+                const exists =
+                    productsData.some(
+                        (product) =>
+                            String(product.id) ===
+                            String(urlId)
+                    );
+
+                if (exists) {
+
+                    p1Select.value =
+                        String(urlId);
+
+                    console.log(
+                        "✅ Product selected from URL:",
+                        urlId
+                    );
+                }
+            }
+
+            // ==================================
+            // INITIAL UPDATE
+            // ==================================
+
+            updateComparison();
+
+        } catch (error) {
+
+            console.error(
+                "❌ Compare Backend Error:",
+                error
+            );
+
+            comparisonBody.innerHTML = `
+                <tr>
+                    <td
+                        colspan="3"
+                        class="compare-placeholder-text"
+                    >
+
+                        <h3 class="compare-error">
+                            ❌ প্রোডাক্ট লোড করা যাচ্ছে না
+                        </h3>
+
+                        <p>
+                            Node.js backend চালু আছে কিনা
+                            নিশ্চিত করুন।
+                        </p>
+
+                        <p>
+                            API:
+                            <br>
+                            <code>
+                                ${escapeHTML(
+                                    `${API_URL}/products`
+                                )}
+                            </code>
+                        </p>
+
+                        <p>
+                            Browser Console থেকে
+                            বিস্তারিত error দেখুন।
+                        </p>
+
+                    </td>
+                </tr>
+            `;
+        }
+    }
+
+    // ==========================================
+    // DROPDOWN EVENTS
+    // ==========================================
+
+    p1Select.addEventListener(
+        "change",
+        updateComparison
+    );
+
+    p2Select.addEventListener(
+        "change",
+        updateComparison
+    );
+
+    // ==========================================
+    // UPDATE COMPARISON
+    // ==========================================
+
+    function updateComparison() {
+
+        const id1 =
+            p1Select.value;
+
+        const id2 =
+            p2Select.value;
+
+        // ==================================
+        // FIND PRODUCTS
+        // ==================================
+
+        const prod1 =
+            productsData.find(
+                (product) =>
+                    String(product.id) ===
+                    String(id1)
+            );
+
+        const prod2 =
+            productsData.find(
+                (product) =>
+                    String(product.id) ===
+                    String(id2)
+            );
+
+        // ==================================
+        // UPDATE HEADINGS
+        // ==================================
+
+        thProduct1.textContent =
+            prod1
+                ? prod1.name
+                : "Product 1";
+
+        thProduct2.textContent =
+            prod2
+                ? prod2.name
+                : "Product 2";
+
+        // ==================================
+        // NOTHING SELECTED
+        // ==================================
+
+        if (!prod1 && !prod2) {
+
+            comparisonBody.innerHTML = `
+                <tr>
+
+                    <td
+                        colspan="3"
+                        class="compare-placeholder-text"
+                    >
+                        তুলনা করার জন্য ওপরের
+                        dropdown থেকে দুটি
+                        product select করুন।
+                    </td>
+
+                </tr>
+            `;
+
+            return;
+        }
+
+        // ==================================
+        // PRODUCT CELL
+        // ==================================
+
+        function getProductCell(
+            product
+        ) {
+
+            if (!product) {
+
+                return `
+                    <span
+                        style="
+                            color:
+                            var(--text-muted);
+                        "
+                    >
+                        Not selected
+                    </span>
+                `;
+            }
+
+            return `
+                <div
+                    class="product-preview-cell"
+                >
+
+                    <div
+                        class="compare-icon-box"
+                    >
+                        ${escapeHTML(
+                            product.icon ||
+                            "📱"
+                        )}
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            ${escapeHTML(
+                                product.name ||
+                                "Unnamed Product"
+                            )}
+                        </strong>
+
+                        <br>
+
+                        <small
+                            style="
+                                color:
+                                var(--accent);
+                            "
+                        >
+                            ${escapeHTML(
+                                product.category ||
+                                "N/A"
+                            )}
+                        </small>
+
+                    </div>
+
+                </div>
+            `;
+        }
+
+        // ==================================
+        // VALUE HELPER
+        // ==================================
+
+        function getValue(
+            product,
+            key
+        ) {
+
+            if (!product) {
+                return "-";
+            }
+
+            return escapeHTML(
+                product[key] ||
+                "N/A"
+            );
+        }
+
+        // ==================================
+        // BUILD TABLE
+        // ==================================
+
+        comparisonBody.innerHTML = `
+
+            <tr>
+
+                <th>
+                    Product
+                </th>
+
+                <td>
+                    ${getProductCell(
+                        prod1
+                    )}
+                </td>
+
+                <td>
+                    ${getProductCell(
+                        prod2
+                    )}
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <th>
+                    Price
+                </th>
+
+                <td>
+                    <strong>
+                        ${getValue(
+                            prod1,
+                            "price"
+                        )}
+                    </strong>
+                </td>
+
+                <td>
+                    <strong>
+                        ${getValue(
+                            prod2,
+                            "price"
+                        )}
+                    </strong>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <th>
+                    Rating
+                </th>
+
+                <td>
+                    ${getValue(
+                        prod1,
+                        "rating"
+                    )}
+                </td>
+
+                <td>
+                    ${getValue(
+                        prod2,
+                        "rating"
+                    )}
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <th>
+                    Smart Value
+                </th>
+
+                <td>
+                    ${getValue(
+                        prod1,
+                        "value"
+                    )}
+                </td>
+
+                <td>
+                    ${getValue(
+                        prod2,
+                        "value"
+                    )}
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <th>
+                    Processor / Core
+                </th>
+
+                <td>
+                    ${getValue(
+                        prod1,
+                        "processor"
+                    )}
+                </td>
+
+                <td>
+                    ${getValue(
+                        prod2,
+                        "processor"
+                    )}
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <th>
+                    Battery Life
+                </th>
+
+                <td>
+                    ${getValue(
+                        prod1,
+                        "battery"
+                    )}
+                </td>
+
+                <td>
+                    ${getValue(
+                        prod2,
+                        "battery"
+                    )}
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <th>
+                    Camera / Extra
+                </th>
+
+                <td>
+                    ${getValue(
+                        prod1,
+                        "camera"
+                    )}
+                </td>
+
+                <td>
+                    ${getValue(
+                        prod2,
+                        "camera"
+                    )}
+                </td>
+
+            </tr>
+
+        `;
+    }
+
+    // ==========================================
+    // START
+    // ==========================================
+
+    fetchCompareData();
+
+}
+
+);
+</script> </body> </html> 

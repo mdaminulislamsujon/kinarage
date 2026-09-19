@@ -1,0 +1,74 @@
+[
+    {
+        "id": "1",
+        "name": "Galaxy Note Smartphone",
+        "category": "mobile",
+        "price": "৳19,999",
+        "rating": "4.5 ★",
+        "value": "9.2/10",
+        "processor": "Octa-core 2.2 GHz",
+        "battery": "5000 mAh",
+        "camera": "50MP Triple",
+        "icon": "📱"
+    },
+    {
+        "id": "2",
+        "name": "UltraBook Pro 14",
+        "category": "laptop",
+        "price": "৳65,000",
+        "rating": "4.8 ★",
+        "value": "9.5/10",
+        "processor": "Intel Core i5 12th Gen",
+        "battery": "Up to 10 hours",
+        "camera": "720p HD Webcam",
+        "icon": "💻"
+    },
+    {
+        "id": "3",
+        "name": "Wireless ANC Earbuds",
+        "category": "gadgets",
+        "price": "৳3,499",
+        "rating": "4.3 ★",
+        "value": "8.9/10",
+        "processor": "Bluetooth 5.3",
+        "battery": "30h with Case",
+        "camera": "N/A",
+        "icon": "🎧"
+    },
+    {
+        "id": "4",
+        "name": "Smart Fitness Watch",
+        "category": "gadgets",
+        "price": "৳4,200",
+        "rating": "4.6 ★",
+        "value": "9.0/10",
+        "processor": "RTK Chipset",
+        "battery": "7 Days Battery",
+        "camera": "N/A",
+        "icon": "⌚"
+    },
+    {
+        "id": "5",
+        "name": "Smart LED Desk Lamp",
+        "category": "home",
+        "price": "৳1,800",
+        "rating": "4.4 ★",
+        "value": "8.8/10",
+        "processor": "Touch Control LED",
+        "battery": "USB Powered",
+        "camera": "N/A",
+        "icon": "💡"
+    },
+    {
+        "id": "6",
+        "name": "Budget Gaming Laptop",
+        "category": "laptop",
+        "price": "৳78,000",
+        "rating": "4.7 ★",
+        "value": "9.1/10",
+        "processor": "Ryzen 5 / RTX 3050",
+        "battery": "6 hours",
+        "camera": "HD Webcam",
+        "icon": "💻"
+    }
+]

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buying Guides — KinarAge</title>
+    <meta name="description" content="Read expert buying guides to understand what to look for before purchasing phones, laptops, and gadgets.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛒%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Guides Page Specific Styles */
+        .page-header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 3rem 0;
+            text-align: center;
+        }
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .page-header p {
+            color: var(--text-secondary);
+        }
+        .guides-container {
+            padding: 4rem 0;
+        }
+        .guide-full-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+        .guide-full-card:hover {
+            border-color: var(--accent);
+        }
+        .guide-full-img {
+            background: var(--bg-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+        .guide-full-content {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .guide-full-content .guide-category {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        .guide-full-content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .guide-full-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+        .guide-meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+        @media (max-width: 768px) {
+            .guide-full-card {
+                grid-template-columns: 1fr;
+            }
+            .guide-full-img {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container header-inner">
+        <a href="index.html" class="logo" aria-label="KinarAge Home">
+            <span class="logo-icon">K</span>
+            <span class="logo-text">Kinar<span>Age</span></span>
+        </a>
+
+        <nav class="desktop-nav" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="compare.html">Compare</a>
+            <a href="guides.html" class="active">Buying Guides</a>
+            <a href="about.html">About</a>
+        </nav>
+
+        <div class="header-actions">
+            <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle dark mode">🌙</button>
+            <button class="icon-button mobile-menu-button" id="mobileMenuButton" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+        </div>
+    </div>
+
+    <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="compare.html">Compare</a>
+        <a href="guides.html">Guides</a>
+        <a href="about.html">About</a>
+    </nav>
+</header>
+
+<main>
+    <div class="page-header">
+        <div class="container">
+            <h1>Expert Buying Guides</h1>
+            <p>টাকা খরচ করার আগে সঠিক গাইডলাইন পড়ে নিন।</p>
+        </div>
+    </div>
+
+    <section class="guides-container">
+        <div class="container">
+            <!-- Guide Item 1 -->
+            <article class="guide-full-card">
+                <div class="guide-full-img">📱</div>
+                <div class="guide-full-content">
+                    <span class="guide-category">Mobile & Smartphones</span>
+                    <h2>ফোন কেনার আগে কোন বিষয়গুলো অবশ্যই দেখবেন?</h2>
+                    <p>স্মার্টফোন কেনার সময় অনেকেই শুধু ক্যামেরা বা র‍্যাম দেখে বিভ্রান্ত হন। প্রসেসর, ব্যাটারি ব্যাকআপ, ডিসপ্লে রিফ্রেশ রেট এবং সফটওয়্যার আপডেট পলিসি—কোনটা আপনার জন্য কতটা জরুরি তা বিস্তারিত জানুন।</p>
+                    <div class="guide-meta-row">
+                        <span>⏱️ পড়তেও সময় লাগবে: ৪ মিনিট</span>
+                        <a href="#" class="text-link">Read Full Guide →</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Guide Item 2 -->
+            <article class="guide-full-card">
+                <div class="guide-full-img">💻</div>
+                <div class="guide-full-content">
+                    <span class="guide-category">Laptops & Computers</span>
+                    <h2>স্টাডি বা কাজের জন্য ল্যাপটপ বাছাই করবেন কীভাবে?</h2>
+                    <p>আপনার কি ফ্রিল্যান্সিং, প্রোগ্রামিং নাকি সাধারণ পড়াশোনার জন্য ল্যাপটপ প্রয়োজন? বাজেট অনুযায়ী সঠিক প্রসেসর (Core i3/i5/i7 বা Ryzen), এসএসডি (SSD) স্টোরেজ এবং র‍্যাম সিলেকশন নিয়ে আমাদের কমপ্লিট গাইড।</p>
+                    <div class="guide-meta-row">
+                        <span>⏱️ পড়তেও সময় লাগবে: ৬ মিনিট</span>
+                        <a href="#" class="text-link">Read Full Guide →</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Guide Item 3 -->
+            <article class="guide-full-card">
+                <div class="guide-full-img">🎧</div>
+                <div class="guide-full-content">
+                    <span class="guide-category">Gadgets & Audio</span>
+                    <h2>ওয়্যারলেস ইয়ারবাডস (Earbuds) কেনার সঠিক নিয়ম</h2>
+                    <p>শুধু দেখতে সুন্দর বা কম দাম দেখেই ইয়ারবাডস কিনবেন না। অ্যাক্টিভ নয়েজ ক্যান্সেলেশন (ANC), ব্লুটুথ ভার্সন, ব্যাটারি লাইফ এবং মাইক্রোফোনের কোয়ালিটি কীভাবে যাচাই করবেন তা জেনে নিন।</p>
+                    <div class="guide-meta-row">
+                        <span>⏱️ পড়তেও সময় লাগবে: ৩ মিনিট</span>
+                        <a href="#" class="text-link">Read Full Guide →</a>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-grid">
+        <div class="footer-brand">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">K</span>
+                <span class="logo-text">Kinar<span>Age</span></span>
+            </a>
+            <p>কেনার আগে research করুন, compare করুন এবং smarter decision নিন।</p>
+        </div>
+        <div class="footer-column">
+            <h3>Explore</h3>
+            <a href="products.html">Products</a>
+            <a href="compare.html">Compare</a>
+            <a href="guides.html">Buying Guides</a>
+        </div>
+        <div class="footer-column">
+            <h3>Company</h3>
+            <a href="about.html">About</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Affiliate Disclosure</a>
+        </div>
+        <div class="footer-column">
+            <h3>Categories</h3>
+            <a href="products.html?category=mobile">Mobile</a>
+            <a href="products.html?category=laptop">Laptop</a>
+            <a href="products.html?category=gadgets">Gadgets</a>
+        </div>
+    </div>
+    <div class="container footer-bottom">
+        <p>© 2026 KinarAge. All rights reserved.</p>
+        <p class="affiliate-note">Some links may be affiliate links. We may earn a commission if you make a qualifying purchase.</p>
+    </div>
+</footer>
+
+<script>
+    // Mobile Menu & Theme Toggle Script
+    const mobileMenuButton = document.getElementById("mobileMenuButton");
+    const mobileNav = document.getElementById("mobileNav");
+    if (mobileMenuButton && mobileNav) {
+        mobileMenuButton.addEventListener("click", () => {
+            const isOpen = mobileNav.classList.toggle("open");
+            mobileMenuButton.setAttribute("aria-expanded", isOpen);
+        });
+    }
+
+    const themeToggle = document.getElementById("themeToggle");
+    if (themeToggle) {
+        const savedTheme = localStorage.getItem("kinarage-theme");
+        if (savedTheme === "dark") {
+            document.body.classList.add("dark");
+            themeToggle.textContent = "☀️";
+        }
+        themeToggle.addEventListener("click", () => {
+            const isDark = document.body.classList.toggle("dark");
+            localStorage.setItem("kinarage-theme", isDark ? "dark" : "light");
+            themeToggle.textContent = isDark ? "☀️" : "🌙";
+        });
+    }
+</script>
+
+</body>
+</html>

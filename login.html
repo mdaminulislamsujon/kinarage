@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login - KinarAge</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<main style="
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+">
+
+    <div style="
+        width:100%;
+        max-width:450px;
+        padding:30px;
+        border-radius:20px;
+        background:var(--card-bg,#fff);
+        box-shadow:0 10px 40px rgba(0,0,0,.12);
+    ">
+
+        <div style="
+            text-align:center;
+            margin-bottom:25px;
+        ">
+
+            <h1>Welcome Back</h1>
+
+            <p>
+                Login to your KinarAge account
+            </p>
+
+        </div>
+
+        <form id="loginForm">
+
+            <div style="margin-bottom:18px;">
+
+                <label>Email</label>
+
+                <input
+                    id="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    required
+                    style="
+                        width:100%;
+                        padding:13px;
+                        margin-top:6px;
+                        border-radius:10px;
+                        border:1px solid #ccc;
+                    "
+                >
+
+            </div>
+
+            <div style="margin-bottom:20px;">
+
+                <label>Password</label>
+
+                <input
+                    id="password"
+                    type="password"
+                    placeholder="Your password"
+                    required
+                    style="
+                        width:100%;
+                        padding:13px;
+                        margin-top:6px;
+                        border-radius:10px;
+                        border:1px solid #ccc;
+                    "
+                >
+
+            </div>
+
+            <button
+                id="loginButton"
+                type="submit"
+                style="
+                    width:100%;
+                    padding:14px;
+                    border:0;
+                    border-radius:10px;
+                    background:#2563eb;
+                    color:#fff;
+                    font-size:16px;
+                    cursor:pointer;
+                "
+            >
+                Login
+            </button>
+
+        </form>
+
+        <div
+            id="message"
+            style="
+                margin-top:18px;
+                text-align:center;
+            "
+        ></div>
+
+        <p style="
+            text-align:center;
+            margin-top:22px;
+        ">
+
+            Don't have an account?
+
+            <a href="register.html">
+                Create Account
+            </a>
+
+        </p>
+
+    </div>
+
+</main>
+
+<script>
+
+const API_URL =
+    "http://localhost:5000/api";
+
+const form =
+    document.getElementById("loginForm");
+
+const button =
+    document.getElementById("loginButton");
+
+const message =
+    document.getElementById("message");
+
+form.addEventListener(
+    "submit",
+    async (event) => {
+
+        event.preventDefault();
+
+        const email =
+            document
+                .getElementById("email")
+                .value
+                .trim();
+
+        const password =
+            document
+                .getElementById("password")
+                .value;
+
+        button.disabled = true;
+
+        button.textContent =
+            "Logging in...";
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_URL}/auth/login`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+                                email,
+                                password
+                            })
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error ||
+                    "Login failed"
+                );
+            }
+
+            localStorage.setItem(
+                "kinarage-token",
+                data.token
+            );
+
+            localStorage.setItem(
+                "kinarage-user",
+                JSON.stringify(data.user)
+            );
+
+            message.innerHTML = `
+                <span style="color:#16a34a;">
+                    Login successful!
+                </span>
+            `;
+
+            /*
+             * Admin হলে admin.html-এ পাঠাবে না।
+             * সাধারণ login থেকে admin access করা যাবে না।
+             */
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "index.html";
+
+            }, 600);
+
+        } catch (error) {
+
+            console.error(error);
+
+            message.innerHTML = `
+                <span style="color:#dc2626;">
+                    ${escapeHTML(
+                        error.message
+                    )}
+                </span>
+            `;
+
+            button.disabled = false;
+
+            button.textContent =
+                "Login";
+        }
+
+    }
+);
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+</script>
+
+</body>
+</html>
