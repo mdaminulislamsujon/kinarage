@@ -425,21 +425,24 @@
 
         } catch (error) {
 
-            console.error(
-                "❌ Failed to load products:",
-                error
-            );
+    console.error("❌ Failed to load products:", error);
 
-            featuredProducts.innerHTML = `
-                <div class="no-results">
-                    <h3>Products load করা যাচ্ছে না</h3>
-                    <p>
-                        PostgreSQL backend চালু আছে কিনা check করুন।
-                    </p>
-                </div>
-            `;
-        }
-    }
+    featuredProducts.innerHTML = `
+        <div class="no-results">
+            <h3>Products load করা যাচ্ছে না</h3>
+            <p>Product API থেকে data পাওয়া যায়নি।</p>
+            <p style="font-size: 14px; color: #777;">
+                Error: ${error.message || "Unknown error"}
+            </p>
+            <button
+                onclick="location.reload()"
+                class="primary-button"
+            >
+                আবার চেষ্টা করুন
+            </button>
+        </div>
+    `;
+}
 
     // ==========================================
     // NEWSLETTER
