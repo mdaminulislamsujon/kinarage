@@ -10,8 +10,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const PRODUCTS_URL =
         "https://kinarage-backend.onrender.com/api/products";
 
+    const SERVER_URL =
+        "https://kinarage-backend.onrender.com";
+
     console.log("🚀 KinarAge App Started");
     console.log("🌐 Products API:", PRODUCTS_URL);
+    console.log("🖼️ Image Server:", SERVER_URL);
 
 
     // ==========================================
@@ -108,7 +112,86 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ==========================================
-    // 4. FETCH PRODUCTS
+    // 4. PRODUCT IMAGE URL
+    // ==========================================
+
+    function getImageURL(imageUrl) {
+
+        if (!imageUrl) {
+
+            return null;
+
+        }
+
+
+        // Already a full URL
+        if (
+            imageUrl.startsWith("http://") ||
+            imageUrl.startsWith("https://")
+        ) {
+
+            return imageUrl;
+
+        }
+
+
+        // Backend relative URL
+        if (imageUrl.startsWith("/")) {
+
+            return `${SERVER_URL}${imageUrl}`;
+
+        }
+
+
+        // Relative URL without /
+        return `${SERVER_URL}/${imageUrl}`;
+
+    }
+
+
+    // ==========================================
+    // 5. PRODUCT IMAGE HTML
+    // ==========================================
+
+    function getProductImageHTML(product) {
+
+        const imageURL =
+            getImageURL(product.image_url);
+
+
+        // If uploaded image exists
+        if (imageURL) {
+
+            return `
+
+                <img
+                    src="${escapeHTML(imageURL)}"
+                    alt="${escapeHTML(
+                        product.name || "Product"
+                    )}"
+                    loading="lazy"
+                    onerror="
+                        this.onerror=null;
+                        this.style.display='none';
+                        this.parentElement.innerHTML='📱';
+                    "
+                >
+
+            `;
+
+        }
+
+
+        // Fallback to icon
+        return escapeHTML(
+            product.icon || "📱"
+        );
+
+    }
+
+
+    // ==========================================
+    // 6. FETCH PRODUCTS
     // ==========================================
 
     async function getProducts() {
@@ -118,18 +201,20 @@ document.addEventListener("DOMContentLoaded", () => {
             PRODUCTS_URL
         );
 
-        const response = await fetch(
-            PRODUCTS_URL,
-            {
-                method: "GET",
 
-                headers: {
-                    "Accept": "application/json"
-                },
+        const response =
+            await fetch(
+                PRODUCTS_URL,
+                {
+                    method: "GET",
 
-                cache: "no-store"
-            }
-        );
+                    headers: {
+                        "Accept": "application/json"
+                    },
+
+                    cache: "no-store"
+                }
+            );
 
 
         console.log(
@@ -169,9 +254,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let data;
 
+
         try {
 
-            data = JSON.parse(responseText);
+            data =
+                JSON.parse(responseText);
 
         } catch (error) {
 
@@ -201,17 +288,32 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
+        // Debug image URLs
+        data.forEach((product) => {
+
+            console.log(
+                `🖼️ ${product.name}:`,
+                product.image_url,
+                "→",
+                getImageURL(product.image_url)
+            );
+
+        });
+
+
         return data;
 
     }
 
 
     // ==========================================
-    // 5. PRODUCTS PAGE
+    // 7. PRODUCTS PAGE
     // ==========================================
 
     const gridEl =
-        document.getElementById("allProductsGrid");
+        document.getElementById(
+            "allProductsGrid"
+        );
 
 
     if (gridEl) {
@@ -329,9 +431,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                                 <div class="product-card-img">
 
-                                    ${escapeHTML(
-                                        product.icon || "📱"
-                                    )}
+                                    ${getProductImageHTML(product)}
 
                                 </div>
 
@@ -373,10 +473,12 @@ document.addEventListener("DOMContentLoaded", () => {
                                         Rating:
 
                                         <strong>
+
                                             ${escapeHTML(
                                                 product.rating ||
                                                 "N/A"
                                             )}
+
                                         </strong>
 
                                     </span>
@@ -387,10 +489,12 @@ document.addEventListener("DOMContentLoaded", () => {
                                         Value:
 
                                         <strong>
+
                                             ${escapeHTML(
                                                 product.value ||
                                                 "N/A"
                                             )}
+
                                         </strong>
 
                                     </span>
@@ -457,6 +561,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     urlParams.get("category");
 
 
+                const urlSearch =
+                    urlParams.get("search");
+
+
                 if (urlCategory) {
 
                     currentCategory =
@@ -470,7 +578,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
                             button.classList.toggle(
                                 "active",
-                                button.dataset.category
+                                (
+                                    button.dataset.category ||
+                                    ""
+                                )
                                     .toLowerCase()
                                     ===
                                     currentCategory
@@ -478,6 +589,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         }
                     );
+
+                }
+
+
+                if (urlSearch) {
+
+                    searchQuery =
+                        urlSearch
+                            .toLowerCase()
+                            .trim();
+
+
+                    if (searchInput) {
+
+                        searchInput.value =
+                            urlSearch;
+
+                    }
 
                 }
 
@@ -641,7 +770,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ==========================================
-    // 6. INDEX FEATURED PRODUCTS
+    // 8. INDEX FEATURED PRODUCTS
     // ==========================================
 
     const featuredProducts =
@@ -717,10 +846,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                                     <div class="product-card-img">
 
-                                        ${escapeHTML(
-                                            product.icon ||
-                                            "📱"
-                                        )}
+                                        ${getProductImageHTML(product)}
 
                                     </div>
 
@@ -762,10 +888,12 @@ document.addEventListener("DOMContentLoaded", () => {
                                             Rating:
 
                                             <strong>
+
                                                 ${escapeHTML(
                                                     product.rating ||
                                                     "N/A"
                                                 )}
+
                                             </strong>
 
                                         </span>
@@ -776,10 +904,12 @@ document.addEventListener("DOMContentLoaded", () => {
                                             Value:
 
                                             <strong>
+
                                                 ${escapeHTML(
                                                     product.value ||
                                                     "N/A"
                                                 )}
+
                                             </strong>
 
                                         </span>
@@ -887,7 +1017,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ==========================================
-    // 7. NEWSLETTER
+    // 9. NEWSLETTER
     // ==========================================
 
     const newsletterForm =
@@ -919,11 +1049,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ==========================================
-    // 8. INDEX SEARCH
+    // 10. INDEX SEARCH
     // ==========================================
 
     const mainSearch =
         document.getElementById("mainSearch");
+
 
     const searchButton =
         document.getElementById("searchButton");
