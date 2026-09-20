@@ -5,10 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
 
     const API_URL =
-        "https://kinarage-backend.onrender.com/api";
+        "https://kinarage-backend-cloudinary.onrender.com/api";
 
     const PRODUCTS_URL =
-        "https://kinarage-backend.onrender.com/api/products";
+        "https://kinarage-backend-cloudinary.onrender.com/api/products";
 
     const SERVER_URL =
         "https://kinarage-backend.onrender.com";
