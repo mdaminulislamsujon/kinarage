@@ -1,30 +1,20 @@
 <!DOCTYPE html>
 <html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>KinarAge — কেনার আগে জেনে নিন</title>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Products — KinarAge</title>
 
     <meta
         name="description"
-        content="KinarAge helps you compare products, understand prices, explore buying guides and make smarter buying decisions."
-    >
-
-    <meta
-        name="keywords"
-        content="KinarAge, product comparison, buying guide, Bangladesh shopping, price comparison, smart buying"
-    >
-
-    <meta name="author" content="KinarAge">
-    <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#0f172a">
-
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="KinarAge — কেনার আগে জেনে নিন">
-    <meta
-        property="og:description"
-        content="Compare products, understand prices and make smarter buying decisions."
+        content="Explore and compare products with prices, ratings and useful buying information."
     >
 
     <link
@@ -32,10 +22,230 @@
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛒%3C/text%3E%3C/svg%3E"
     >
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <style>
+
+        /* ==========================================
+           PRODUCTS PAGE
+        ========================================== */
+
+        .page-header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+        }
+
+
+        /* ==========================================
+           FILTER BAR
+        ========================================== */
+
+        .filter-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+
+        /* ==========================================
+           SEARCH
+        ========================================== */
+
+        .search-box-wrapper {
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.35rem 0.75rem;
+            width: 280px;
+        }
+
+        .search-box-wrapper span {
+            color: var(--text-muted);
+            margin-right: 8px;
+        }
+
+        .search-box-wrapper input {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .search-box-wrapper input::placeholder {
+            color: var(--text-muted);
+        }
+
+
+        /* ==========================================
+           PRODUCT CARD
+        ========================================== */
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+
+        .product-card-img {
+            background: var(--bg-muted);
+            height: 160px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-tag {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-card h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            background: var(--bg-muted);
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-card .primary-button {
+            text-align: center;
+            margin-top: auto;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+
+        /* ==========================================
+           LOADING / NO RESULTS
+        ========================================== */
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem 1rem;
+            color: var(--text-secondary);
+        }
+
+        .no-results h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+
+        /* ==========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 768px) {
+
+            .page-header {
+                padding: 2.5rem 0;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .filter-bar {
+                align-items: stretch;
+            }
+
+            .category-filters {
+                width: 100%;
+            }
+
+            .search-box-wrapper {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
 </head>
 
+
 <body>
+
 
 <!-- ==========================================
      HEADER
@@ -45,24 +255,36 @@
 
     <div class="container header-inner">
 
-        <a href="index.html" class="logo" aria-label="KinarAge Home">
-            <span class="logo-icon">K</span>
+        <a
+            href="index.html"
+            class="logo"
+            aria-label="KinarAge Home"
+        >
+
+            <span class="logo-icon">
+                K
+            </span>
 
             <span class="logo-text">
                 Kinar<span>Age</span>
             </span>
+
         </a>
 
 
-        <!-- Desktop Navigation -->
+        <nav
+            class="desktop-nav"
+            aria-label="Main navigation"
+        >
 
-        <nav class="desktop-nav" aria-label="Main navigation">
-
-            <a href="index.html" class="active">
+            <a href="index.html">
                 Home
             </a>
 
-            <a href="products.html">
+            <a
+                href="products.html"
+                class="active"
+            >
                 Products
             </a>
 
@@ -83,24 +305,20 @@
 
         <div class="header-actions">
 
-            <!-- Dark Mode -->
-
             <button
                 class="icon-button"
                 id="themeToggle"
                 type="button"
-                aria-label="Switch to dark mode"
+                aria-label="Toggle dark mode"
                 title="Toggle theme"
             >
                 🌙
             </button>
 
 
-            <!-- Mobile Menu -->
-
             <button
-                class="icon-button phone-menu-button"
-                id="phoneMenuButton"
+                class="icon-button mobile-menu-button"
+                id="mobileMenuButton"
                 type="button"
                 aria-label="Open menu"
                 aria-expanded="false"
@@ -113,11 +331,9 @@
     </div>
 
 
-    <!-- Mobile Navigation -->
-
     <nav
-        class="phone-nav"
-        id="phoneNav"
+        class="mobile-nav"
+        id="mobileNav"
         aria-label="Mobile navigation"
     >
 
@@ -125,7 +341,10 @@
             Home
         </a>
 
-        <a href="products.html">
+        <a
+            href="products.html"
+            class="active"
+        >
             Products
         </a>
 
@@ -152,852 +371,153 @@
 
 <main>
 
-<!-- ==========================================
-     HERO
-========================================== -->
 
-<section class="hero">
+    <!-- PAGE HEADER -->
 
-    <div class="container hero-grid">
+    <section class="page-header">
 
-        <div class="hero-content">
-
-            <div class="eyebrow">
-
-                <span class="status-dot"></span>
-
-                Smart buying starts here
-
-            </div>
-
+        <div class="container">
 
             <h1>
-                কেনার আগে
-                <span class="gradient-text">
-                    জেনে নিন।
-                </span>
+                All Products & Prices
             </h1>
 
-
-            <p class="hero-description">
-                Product কেনার আগে price, features, comparison,
-                reviews এবং buying guide এক জায়গায় দেখে
-                smarter decision নিন।
+            <p>
+                আপনার পছন্দের product খুঁজে নিন
+                এবং কেনার আগে compare করুন।
             </p>
 
-
-            <!-- Search -->
-
-            <div class="hero-search">
-
-                <label
-                    for="mainSearch"
-                    class="sr-only"
-                >
-                    Search products
-                </label>
-
-
-                <span class="search-icon">
-                    ⌕
-                </span>
-
-
-                <input
-                    type="search"
-                    id="mainSearch"
-                    placeholder="আপনি কী কিনতে চান?"
-                    autocomplete="off"
-                >
-
-
-                <button
-                    type="button"
-                    id="searchButton"
-                    class="search-button"
-                >
-                    Search
-                </button>
-
-            </div>
-
-
-            <!-- Popular Searches -->
-
-            <div class="popular-searches">
-
-                <span>
-                    Popular:
-                </span>
-
-
-                <a href="products.html?category=phone">
-                    Phones
-                </a>
-
-
-                <a href="products.html?category=laptop">
-                    Laptops
-                </a>
-
-
-                <a href="products.html?category=gadgets">
-                    Gadgets
-                </a>
-
-
-                <a href="products.html?category=home">
-                    Home
-                </a>
-
-            </div>
-
         </div>
 
-
-        <!-- Hero Visual -->
-
-        <div class="hero-visual">
-
-            <div class="decision-card">
-
-                <div class="decision-card-top">
-
-                    <span class="mini-label">
-                        SMART DECISION
-                    </span>
+    </section>
 
 
-                    <span class="verified-badge">
-                        ✓ Verified
-                    </span>
+    <!-- PRODUCTS -->
 
-                </div>
+    <section class="section">
 
-
-                <div class="product-preview">
-
-                    <div class="product-placeholder">
-                        📱
-                    </div>
+        <div class="container">
 
 
-                    <div>
+            <!-- FILTER -->
 
-                        <span class="preview-category">
-                            Smartphone
-                        </span>
+            <div class="filter-bar">
 
 
-                        <h3>
-                            Your next phone
-                        </h3>
+                <div
+                    class="category-filters"
+                    id="categoryFilters"
+                >
+
+                    <button
+                        class="filter-btn active"
+                        data-category="all"
+                        type="button"
+                    >
+                        All
+                    </button>
 
 
-                        <p>
-                            Compare before you buy.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="score-row">
-
-                    <div class="score-item">
-
-                        <span>
-                            Price
-                        </span>
-
-                        <strong>
-                            Good
-                        </strong>
-
-                    </div>
+                    <button
+                        class="filter-btn"
+                        data-category="phone"
+                        type="button"
+                    >
+                        Phone
+                    </button>
 
 
-                    <div class="score-item">
-
-                        <span>
-                            Value
-                        </span>
-
-                        <strong>
-                            9.1/10
-                        </strong>
-
-                    </div>
+                    <button
+                        class="filter-btn"
+                        data-category="laptop"
+                        type="button"
+                    >
+                        Laptop
+                    </button>
 
 
-                    <div class="score-item">
+                    <button
+                        class="filter-btn"
+                        data-category="gadgets"
+                        type="button"
+                    >
+                        Gadgets
+                    </button>
 
-                        <span>
-                            Rating
-                        </span>
 
-                        <strong>
-                            4.6 ★
-                        </strong>
+                    <button
+                        class="filter-btn"
+                        data-category="home"
+                        type="button"
+                    >
+                        Home
+                    </button>
 
-                    </div>
+
+                    <button
+                        class="filter-btn"
+                        data-category="fashion"
+                        type="button"
+                    >
+                        Fashion
+                    </button>
+
+
+                    <button
+                        class="filter-btn"
+                        data-category="beauty"
+                        type="button"
+                    >
+                        Beauty
+                    </button>
 
                 </div>
 
 
-                <div class="decision-line">
+                <!-- SEARCH -->
+
+                <div class="search-box-wrapper">
 
                     <span>
-                        Buying confidence
+                        ⌕
                     </span>
 
-                    <strong>
-                        High
-                    </strong>
+                    <input
+                        type="search"
+                        id="productSearchInput"
+                        placeholder="Search products..."
+                        autocomplete="off"
+                    >
 
                 </div>
 
             </div>
 
 
-            <div class="floating-badge floating-one">
-                ⚡ Compare
-            </div>
+            <!-- PRODUCT GRID -->
 
-
-            <div class="floating-badge floating-two">
-                💰 Better price
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ==========================================
-     TRUST STRIP
-========================================== -->
-
-<section class="trust-strip">
-
-    <div class="container trust-grid">
-
-        <div class="trust-item">
-
-            <span>🔎</span>
-
-            <div>
-
-                <strong>
-                    Research first
-                </strong>
-
-                <small>
-                    Know before buying
-                </small>
-
-            </div>
-
-        </div>
-
-
-        <div class="trust-item">
-
-            <span>⚖️</span>
-
-            <div>
-
-                <strong>
-                    Compare options
-                </strong>
-
-                <small>
-                    Side-by-side decisions
-                </small>
-
-            </div>
-
-        </div>
-
-
-        <div class="trust-item">
-
-            <span>💡</span>
-
-            <div>
-
-                <strong>
-                    Useful guides
-                </strong>
-
-                <small>
-                    Simple buying advice
-                </small>
-
-            </div>
-
-        </div>
-
-
-        <div class="trust-item">
-
-            <span>🔗</span>
-
-            <div>
-
-                <strong>
-                    Trusted stores
-                </strong>
-
-                <small>
-                    Check current offers
-                </small>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ==========================================
-     CATEGORIES
-========================================== -->
-
-<section class="section">
-
-    <div class="container">
-
-        <div class="section-heading">
-
-            <div>
-
-                <span class="section-kicker">
-                    EXPLORE
-                </span>
-
-                <h2>
-                    কী কিনতে চান?
-                </h2>
-
-            </div>
-
-
-            <a
-                href="products.html"
-                class="text-link"
-            >
-                সব দেখুন →
-            </a>
-
-        </div>
-
-
-        <div class="category-grid">
-
-            <!-- Phone -->
-
-            <a
-                href="products.html?category=phone"
-                class="category-card"
+            <div
+                class="product-grid"
+                id="allProductsGrid"
             >
 
-                <span class="category-icon">
-                    📱
-                </span>
-
-                <strong>
-                    Phone
-                </strong>
-
-                <small>
-                    Smartphones & accessories
-                </small>
-
-            </a>
-
-
-            <!-- Laptop -->
-
-            <a
-                href="products.html?category=laptop"
-                class="category-card"
-            >
-
-                <span class="category-icon">
-                    💻
-                </span>
-
-                <strong>
-                    Laptop
-                </strong>
-
-                <small>
-                    Work & study devices
-                </small>
-
-            </a>
-
-
-            <!-- Gadgets -->
-
-            <a
-                href="products.html?category=gadgets"
-                class="category-card"
-            >
-
-                <span class="category-icon">
-                    🎧
-                </span>
-
-                <strong>
-                    Gadgets
-                </strong>
-
-                <small>
-                    Smart tech & accessories
-                </small>
-
-            </a>
-
-
-            <!-- Home -->
-
-            <a
-                href="products.html?category=home"
-                class="category-card"
-            >
-
-                <span class="category-icon">
-                    🏠
-                </span>
-
-                <strong>
-                    Home
-                </strong>
-
-                <small>
-                    Useful home products
-                </small>
-
-            </a>
-
-
-            <!-- Fashion -->
-
-            <a
-                href="products.html?category=fashion"
-                class="category-card"
-            >
-
-                <span class="category-icon">
-                    👕
-                </span>
-
-                <strong>
-                    Fashion
-                </strong>
-
-                <small>
-                    Style & essentials
-                </small>
-
-            </a>
-
-
-            <!-- Beauty -->
-
-            <a
-                href="products.html?category=beauty"
-                class="category-card"
-            >
-
-                <span class="category-icon">
-                    ✨
-                </span>
-
-                <strong>
-                    Beauty
-                </strong>
-
-                <small>
-                    Beauty & personal care
-                </small>
-
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ==========================================
-     FEATURED PRODUCTS
-========================================== -->
-
-<section class="section section-muted">
-
-    <div class="container">
-
-        <div class="section-heading">
-
-            <div>
-
-                <span class="section-kicker">
-                    FEATURED
-                </span>
-
-                <h2>
-                    Popular picks
-                </h2>
-
-                <p>
-                    ভালো option খুঁজে পেতে আমাদের
-                    selected products দেখুন।
-                </p>
-
-            </div>
-
-
-            <a
-                href="products.html"
-                class="outline-button"
-            >
-                View all
-            </a>
-
-        </div>
-
-
-        <div
-            class="product-grid"
-            id="featuredProducts"
-        >
-
-            <div class="loading-card">
-
-                <div class="loading-spinner"></div>
-
-                <span>
-                    Products loading...
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ==========================================
-     COMPARE BANNER
-========================================== -->
-
-<section class="section">
-
-    <div class="container">
-
-        <div class="compare-banner">
-
-            <div class="compare-content">
-
-                <span class="section-kicker">
-                    SMART COMPARISON
-                </span>
-
-
-                <h2>
-                    দুইটা product-এর মধ্যে confused?
-                </h2>
-
-
-                <p>
-                    Features, price, rating এবং value
-                    একসাথে compare করে সিদ্ধান্ত নিন।
-                </p>
-
-
-                <a
-                    href="compare.html"
-                    class="primary-button"
-                >
-                    Compare products →
-                </a>
-
-            </div>
-
-
-            <div class="compare-visual">
-
-                <div class="compare-product">
-
-                    <span>
-                        📱
-                    </span>
-
-                    <strong>
-                        Phone A
-                    </strong>
-
-                    <small>
-                        ৳18,999
-                    </small>
-
-                </div>
-
-
-                <div class="vs">
-                    VS
-                </div>
-
-
-                <div class="compare-product">
-
-                    <span>
-                        📱
-                    </span>
-
-                    <strong>
-                        Phone B
-                    </strong>
-
-                    <small>
-                        ৳19,499
-                    </small>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ==========================================
-     BUYING GUIDES
-========================================== -->
-
-<section class="section section-muted">
-
-    <div class="container">
-
-        <div class="section-heading">
-
-            <div>
-
-                <span class="section-kicker">
-                    LEARN
-                </span>
-
-                <h2>
-                    Buying guides
-                </h2>
-
-                <p>
-                    কেনার আগে কী কী দেখবেন—
-                    সহজ ভাষায় জানুন।
-                </p>
-
-            </div>
-
-
-            <a
-                href="guides.html"
-                class="text-link"
-            >
-                সব guides →
-            </a>
-
-        </div>
-
-
-        <div class="guide-grid">
-
-            <article class="guide-card">
-
-                <div class="guide-image">
-                    📱
-                </div>
-
-
-                <div class="guide-content">
-
-                    <span class="guide-category">
-                        PHONE
-                    </span>
-
+                <div class="no-results">
 
                     <h3>
-                        ফোন কেনার আগে কোন বিষয়গুলো দেখবেন?
+                        Products loading...
                     </h3>
 
-
                     <p>
-                        Camera, processor, display,
-                        battery এবং software—
-                        কোনটা কখন গুরুত্বপূর্ণ?
+                        দয়া করে একটু অপেক্ষা করুন।
                     </p>
 
-
-                    <a href="guides.html">
-                        Read guide →
-                    </a>
-
                 </div>
-
-            </article>
-
-
-            <article class="guide-card">
-
-                <div class="guide-image">
-                    💻
-                </div>
-
-
-                <div class="guide-content">
-
-                    <span class="guide-category">
-                        LAPTOP
-                    </span>
-
-
-                    <h3>
-                        Study-এর জন্য laptop বাছাই করবেন কীভাবে?
-                    </h3>
-
-
-                    <p>
-                        Budget অনুযায়ী processor,
-                        RAM, SSD এবং battery life বুঝে নিন।
-                    </p>
-
-
-                    <a href="guides.html">
-                        Read guide →
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <article class="guide-card">
-
-                <div class="guide-image">
-                    🎧
-                </div>
-
-
-                <div class="guide-content">
-
-                    <span class="guide-category">
-                        GADGETS
-                    </span>
-
-
-                    <h3>
-                        Earbuds কেনার সময় শুধু price দেখবেন?
-                    </h3>
-
-
-                    <p>
-                        Sound, microphone, battery এবং
-                        comfort—কীভাবে compare করবেন।
-                    </p>
-
-
-                    <a href="guides.html">
-                        Read guide →
-                    </a>
-
-                </div>
-
-            </article>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ==========================================
-     NEWSLETTER
-========================================== -->
-
-<section class="section">
-
-    <div class="container">
-
-        <div class="newsletter">
-
-            <div>
-
-                <span class="section-kicker">
-                    STAY UPDATED
-                </span>
-
-
-                <h2>
-                    নতুন deals & buying guides মিস করবেন না।
-                </h2>
-
-
-                <p>
-                    Useful buying information—spam নয়।
-                </p>
 
             </div>
 
-
-            <form
-                class="newsletter-form"
-                id="newsletterForm"
-            >
-
-                <label
-                    for="email"
-                    class="sr-only"
-                >
-                    Email address
-                </label>
-
-
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="আপনার email"
-                    required
-                >
-
-
-                <button
-                    type="submit"
-                    class="primary-button"
-                >
-                    Subscribe
-                </button>
-
-            </form>
-
         </div>
 
-    </div>
-
-</section>
+    </section>
 
 </main>
 
@@ -1009,6 +529,7 @@
 <footer class="site-footer">
 
     <div class="container footer-grid">
+
 
         <div class="footer-brand">
 
@@ -1127,43 +648,48 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    // ==========================================
-    // MOBILE MENU
-    // ==========================================
 
-    const phoneMenuButton =
-        document.getElementById("phoneMenuButton");
+    /* ==========================================
+       MOBILE MENU
+    ========================================== */
 
-    const phoneNav =
-        document.getElementById("phoneNav");
+    const mobileMenuButton =
+        document.getElementById("mobileMenuButton");
+
+    const mobileNav =
+        document.getElementById("mobileNav");
 
 
-    if (phoneMenuButton && phoneNav) {
+    if (mobileMenuButton && mobileNav) {
 
-        phoneMenuButton.addEventListener("click", function () {
+        mobileMenuButton.addEventListener(
+            "click",
+            function () {
 
-            const isOpen =
-                phoneNav.classList.toggle("open");
+                const isOpen =
+                    mobileNav.classList.toggle("open");
 
-            phoneMenuButton.setAttribute(
-                "aria-expanded",
-                isOpen ? "true" : "false"
-            );
 
-        });
+                mobileMenuButton.setAttribute(
+                    "aria-expanded",
+                    isOpen ? "true" : "false"
+                );
+
+            }
+        );
 
     }
 
 
-    // ==========================================
-    // DARK / LIGHT THEME
-    // ==========================================
+    /* ==========================================
+       DARK MODE
+    ========================================== */
 
     const themeToggle =
         document.getElementById("themeToggle");
 
 
-    function applySavedTheme() {
+    function applyTheme() {
 
         const savedTheme =
             localStorage.getItem("kinarage-theme");
@@ -1204,98 +730,35 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    applySavedTheme();
+    applyTheme();
 
 
     if (themeToggle) {
 
-        themeToggle.addEventListener("click", function () {
-
-            const isDark =
-                document.body.classList.toggle("dark");
-
-
-            localStorage.setItem(
-                "kinarage-theme",
-                isDark ? "dark" : "light"
-            );
-
-
-            themeToggle.textContent =
-                isDark ? "☀️" : "🌙";
-
-
-            themeToggle.setAttribute(
-                "aria-label",
-                isDark
-                    ? "Switch to light mode"
-                    : "Switch to dark mode"
-            );
-
-        });
-
-    }
-
-
-    // ==========================================
-    // SEARCH
-    // ==========================================
-
-    const searchInput =
-        document.getElementById("mainSearch");
-
-    const searchButton =
-        document.getElementById("searchButton");
-
-
-    function performSearch() {
-
-        if (!searchInput) return;
-
-
-        const query =
-            searchInput.value.trim();
-
-
-        if (!query) {
-
-            searchInput.focus();
-
-            return;
-
-        }
-
-
-        window.location.href =
-            "products.html?search=" +
-            encodeURIComponent(query);
-
-    }
-
-
-    if (searchButton) {
-
-        searchButton.addEventListener(
+        themeToggle.addEventListener(
             "click",
-            performSearch
-        );
+            function () {
 
-    }
+                const isDark =
+                    document.body.classList.toggle("dark");
 
 
-    if (searchInput) {
+                localStorage.setItem(
+                    "kinarage-theme",
+                    isDark ? "dark" : "light"
+                );
 
-        searchInput.addEventListener(
-            "keydown",
-            function (event) {
 
-                if (event.key === "Enter") {
+                themeToggle.textContent =
+                    isDark ? "☀️" : "🌙";
 
-                    event.preventDefault();
 
-                    performSearch();
-
-                }
+                themeToggle.setAttribute(
+                    "aria-label",
+                    isDark
+                        ? "Switch to light mode"
+                        : "Switch to dark mode"
+                );
 
             }
         );
@@ -1303,52 +766,34 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // ==========================================
-    // FORMAT PRICE
-    // ==========================================
+    /* ==========================================
+       PRODUCT VARIABLES
+    ========================================== */
 
-    function formatPrice(price) {
+    const productsGrid =
+        document.getElementById("allProductsGrid");
 
-        if (
-            price === null ||
-            price === undefined ||
-            price === ""
-        ) {
+    const searchInput =
+        document.getElementById("productSearchInput");
 
-            return "Price unavailable";
-
-        }
+    const filterButtons =
+        document.querySelectorAll(".filter-btn");
 
 
-        const numericPrice =
-            Number(
-                String(price)
-                    .replace(/৳/g, "")
-                    .replace(/,/g, "")
-                    .trim()
-            );
+    let allProducts = [];
+
+    let currentCategory = "all";
+
+    let currentSearch = "";
 
 
-        if (!Number.isNaN(numericPrice)) {
-
-            return "৳" +
-                numericPrice.toLocaleString("en-BD");
-
-        }
-
-
-        return String(price);
-
-    }
-
-
-    // ==========================================
-    // ESCAPE HTML
-    // ==========================================
+    /* ==========================================
+       ESCAPE HTML
+    ========================================== */
 
     function escapeHTML(value) {
 
-        return String(value)
+        return String(value ?? "")
 
             .replace(/&/g, "&amp;")
 
@@ -1363,17 +808,190 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // ==========================================
-    // FEATURED PRODUCTS
-    // ==========================================
+    /* ==========================================
+       NORMALIZE CATEGORY
+    ========================================== */
 
-    const featuredProducts =
-        document.getElementById("featuredProducts");
+    function normalizeCategory(category) {
+
+        return String(category || "")
+            .trim()
+            .toLowerCase();
+
+    }
 
 
-    async function loadFeaturedProducts() {
+    /* ==========================================
+       RENDER PRODUCTS
+    ========================================== */
 
-        if (!featuredProducts) return;
+    function renderProducts() {
+
+        if (!productsGrid) return;
+
+
+        const filteredProducts =
+            allProducts.filter(function (product) {
+
+
+                const productCategory =
+                    normalizeCategory(product.category);
+
+
+                const productName =
+                    String(product.name || "")
+                        .toLowerCase();
+
+
+                const searchMatch =
+                    !currentSearch ||
+                    productName.includes(
+                        currentSearch.toLowerCase()
+                    );
+
+
+                const categoryMatch =
+                    currentCategory === "all" ||
+                    productCategory === currentCategory;
+
+
+                return (
+                    searchMatch &&
+                    categoryMatch
+                );
+
+            });
+
+
+        if (filteredProducts.length === 0) {
+
+            productsGrid.innerHTML = `
+
+                <div class="no-results">
+
+                    <h3>
+                        কোনো product পাওয়া যায়নি
+                    </h3>
+
+                    <p>
+                        অন্য category বা search term দিয়ে চেষ্টা করুন।
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        productsGrid.innerHTML =
+            filteredProducts.map(function (product) {
+
+
+                const productId =
+                    product.id || "";
+
+
+                const name =
+                    product.name ||
+                    "Unnamed Product";
+
+
+                const category =
+                    product.category ||
+                    "Product";
+
+
+                const price =
+                    product.price ||
+                    "Price unavailable";
+
+
+                const rating =
+                    product.rating ||
+                    "N/A";
+
+
+                const value =
+                    product.value ||
+                    "N/A";
+
+
+                const icon =
+                    product.icon ||
+                    "📱";
+
+
+                return `
+
+                    <div class="product-card">
+
+
+                        <div class="product-card-img">
+                            ${escapeHTML(icon)}
+                        </div>
+
+
+                        <span class="product-tag">
+                            ${escapeHTML(category)}
+                        </span>
+
+
+                        <h3>
+                            ${escapeHTML(name)}
+                        </h3>
+
+
+                        <div class="product-price">
+                            ${escapeHTML(price)}
+                        </div>
+
+
+                        <div class="product-meta">
+
+                            <span>
+                                Rating:
+                                <strong>
+                                    ${escapeHTML(rating)}
+                                </strong>
+                            </span>
+
+
+                            <span>
+                                Value:
+                                <strong>
+                                    ${escapeHTML(value)}
+                                </strong>
+                            </span>
+
+                        </div>
+
+
+                        <a
+                            href="compare.html?id=${encodeURIComponent(productId)}"
+                            class="primary-button"
+                        >
+                            Compare & Details
+                        </a>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+    }
+
+
+    /* ==========================================
+       LOAD PRODUCTS FROM RENDER
+    ========================================== */
+
+    async function loadProducts() {
+
+        if (!productsGrid) return;
 
 
         try {
@@ -1399,161 +1017,97 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!Array.isArray(products)) {
 
                 throw new Error(
-                    "Invalid product data received"
+                    "Invalid product data"
                 );
 
             }
 
 
-            if (products.length === 0) {
+            allProducts = products;
 
-                featuredProducts.innerHTML = `
 
-                    <div class="no-results">
+            /* URL category */
 
-                        <h3>
-                            No products available
-                        </h3>
+            const params =
+                new URLSearchParams(
+                    window.location.search
+                );
 
-                        <p>
-                            Backend থেকে এখনো কোনো
-                            product পাওয়া যায়নি।
-                        </p>
 
-                    </div>
+            const urlCategory =
+                normalizeCategory(
+                    params.get("category")
+                );
 
-                `;
 
-                return;
+            const validCategories = [
+                "phone",
+                "laptop",
+                "gadgets",
+                "home",
+                "fashion",
+                "beauty"
+            ];
+
+
+            if (
+                urlCategory &&
+                validCategories.includes(urlCategory)
+            ) {
+
+                currentCategory =
+                    urlCategory;
+
+
+                filterButtons.forEach(
+                    function (button) {
+
+                        button.classList.toggle(
+                            "active",
+                            normalizeCategory(
+                                button.dataset.category
+                            ) === currentCategory
+                        );
+
+                    }
+                );
 
             }
 
 
-            /*
-             * প্রথম 6টি product দেখাবে।
-             * পরে চাইলে এখানে random বা
-             * featured=true filter করা যাবে।
-             */
+            /* URL search */
 
-            const featured =
-                products.slice(0, 6);
+            const urlSearch =
+                params.get("search");
 
 
-            featuredProducts.innerHTML =
-                featured.map(function (product) {
+            if (urlSearch) {
 
-                    const productId =
-                        product.id || "";
+                currentSearch =
+                    urlSearch.trim();
 
+                if (searchInput) {
 
-                    const productName =
-                        product.name ||
-                        "Unnamed Product";
+                    searchInput.value =
+                        currentSearch;
 
+                }
 
-                    const category =
-                        product.category ||
-                        "Product";
+            }
 
 
-                    const rating =
-                        product.rating ||
-                        "N/A";
-
-
-                    const value =
-                        product.value ||
-                        "N/A";
-
-
-                    const icon =
-                        product.icon ||
-                        "📦";
-
-
-                    return `
-
-                        <div class="product-card">
-
-                            <div class="product-card-img">
-
-                                ${escapeHTML(icon)}
-
-                            </div>
-
-
-                            <span class="product-tag">
-
-                                ${escapeHTML(category)}
-
-                            </span>
-
-
-                            <h3>
-
-                                ${escapeHTML(productName)}
-
-                            </h3>
-
-
-                            <div class="product-price">
-
-                                ${escapeHTML(
-                                    formatPrice(product.price)
-                                )}
-
-                            </div>
-
-
-                            <div class="product-meta">
-
-                                <span>
-
-                                    Rating:
-
-                                    <strong>
-                                        ${escapeHTML(rating)}
-                                    </strong>
-
-                                </span>
-
-
-                                <span>
-
-                                    Value:
-
-                                    <strong>
-                                        ${escapeHTML(value)}
-                                    </strong>
-
-                                </span>
-
-                            </div>
-
-
-                            <a
-                                href="compare.html?id=${encodeURIComponent(productId)}"
-                                class="primary-button"
-                            >
-                                Compare & Details
-                            </a>
-
-                        </div>
-
-                    `;
-
-                }).join("");
+            renderProducts();
 
 
         } catch (error) {
 
             console.error(
-                "❌ Failed to load products:",
+                "Product loading error:",
                 error
             );
 
 
-            featuredProducts.innerHTML = `
+            productsGrid.innerHTML = `
 
                 <div class="no-results">
 
@@ -1561,11 +1115,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         Products load করা যাচ্ছে না
                     </h3>
 
-
                     <p>
                         Product API থেকে data পাওয়া যায়নি।
                     </p>
-
 
                     <p
                         style="
@@ -1583,8 +1135,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                     <button
-                        onclick="location.reload()"
+                        type="button"
                         class="primary-button"
+                        id="retryButton"
                         style="margin-top:15px;"
                     >
                         আবার চেষ্টা করুন
@@ -1594,34 +1147,118 @@ document.addEventListener("DOMContentLoaded", function () {
 
             `;
 
+
+            const retryButton =
+                document.getElementById(
+                    "retryButton"
+                );
+
+
+            if (retryButton) {
+
+                retryButton.addEventListener(
+                    "click",
+                    loadProducts
+                );
+
+            }
+
         }
 
     }
 
 
-    // ==========================================
-    // NEWSLETTER
-    // ==========================================
+    /* ==========================================
+       CATEGORY FILTER
+    ========================================== */
 
-    const newsletterForm =
-        document.getElementById("newsletterForm");
+    filterButtons.forEach(
+        function (button) {
 
-
-    if (newsletterForm) {
-
-        newsletterForm.addEventListener(
-            "submit",
-            function (event) {
-
-                event.preventDefault();
+            button.addEventListener(
+                "click",
+                function () {
 
 
-                alert(
-                    "Thanks! Newsletter system will be connected in the next version."
-                );
+                    filterButtons.forEach(
+                        function (btn) {
+
+                            btn.classList.remove(
+                                "active"
+                            );
+
+                        }
+                    );
 
 
-                newsletterForm.reset();
+                    button.classList.add(
+                        "active"
+                    );
+
+
+                    currentCategory =
+                        normalizeCategory(
+                            button.dataset.category
+                        );
+
+
+                    renderProducts();
+
+
+                    /* URL update */
+
+                    const url =
+                        new URL(
+                            window.location.href
+                        );
+
+
+                    if (
+                        currentCategory === "all"
+                    ) {
+
+                        url.searchParams.delete(
+                            "category"
+                        );
+
+                    } else {
+
+                        url.searchParams.set(
+                            "category",
+                            currentCategory
+                        );
+
+                    }
+
+
+                    window.history.replaceState(
+                        {},
+                        "",
+                        url
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    /* ==========================================
+       SEARCH
+    ========================================== */
+
+    if (searchInput) {
+
+        searchInput.addEventListener(
+            "input",
+            function () {
+
+                currentSearch =
+                    searchInput.value.trim();
+
+
+                renderProducts();
 
             }
         );
@@ -1629,15 +1266,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // ==========================================
-    // LOAD PRODUCTS
-    // ==========================================
+    /* ==========================================
+       START
+    ========================================== */
 
-    loadFeaturedProducts();
+    loadProducts();
 
 });
 
 </script>
 
+
 </body>
+
 </html>
