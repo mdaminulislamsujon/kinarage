@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "https://kinarage-backend.onrender.com/api";
 
     const PRODUCTS_URL =
-        `${API_URL}/products`;
+        "https://kinarage-backend.onrender.com/api/products";
 
     console.log("🚀 KinarAge App Started");
     console.log("🌐 Products API:", PRODUCTS_URL);
