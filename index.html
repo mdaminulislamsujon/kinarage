@@ -26,10 +26,6 @@
         property="og:description"
         content="Compare products, understand prices and make smarter buying decisions."
     >
-    <meta
-        property="og:url"
-        content="https://YOUR-GITHUB-USERNAME.github.io/kinarage/"
-    >
 
     <link
         rel="icon"
@@ -50,15 +46,15 @@
     <div class="container header-inner">
 
         <a href="index.html" class="logo" aria-label="KinarAge Home">
-
             <span class="logo-icon">K</span>
 
             <span class="logo-text">
                 Kinar<span>Age</span>
             </span>
-
         </a>
 
+
+        <!-- Desktop Navigation -->
 
         <nav class="desktop-nav" aria-label="Main navigation">
 
@@ -87,16 +83,20 @@
 
         <div class="header-actions">
 
+            <!-- Dark Mode -->
+
             <button
                 class="icon-button"
                 id="themeToggle"
                 type="button"
-                aria-label="Toggle dark mode"
+                aria-label="Switch to dark mode"
                 title="Toggle theme"
             >
                 🌙
             </button>
 
+
+            <!-- Mobile Menu -->
 
             <button
                 class="icon-button phone-menu-button"
@@ -113,10 +113,12 @@
     </div>
 
 
+    <!-- Mobile Navigation -->
+
     <nav
         class="phone-nav"
         id="phoneNav"
-        aria-label="phone navigation"
+        aria-label="Mobile navigation"
     >
 
         <a href="index.html">
@@ -149,7 +151,6 @@
 ========================================== -->
 
 <main>
-
 
 <!-- ==========================================
      HERO
@@ -185,6 +186,8 @@
             </p>
 
 
+            <!-- Search -->
+
             <div class="hero-search">
 
                 <label
@@ -219,6 +222,8 @@
             </div>
 
 
+            <!-- Popular Searches -->
+
             <div class="popular-searches">
 
                 <span>
@@ -236,13 +241,13 @@
                 </a>
 
 
-                <a href="products.html?category=earbuds">
-                    Earbuds
+                <a href="products.html?category=gadgets">
+                    Gadgets
                 </a>
 
 
-                <a href="products.html?category=smartwatch">
-                    Smartwatch
+                <a href="products.html?category=home">
+                    Home
                 </a>
 
             </div>
@@ -250,7 +255,7 @@
         </div>
 
 
-        <!-- HERO VISUAL -->
+        <!-- Hero Visual -->
 
         <div class="hero-visual">
 
@@ -495,6 +500,8 @@
 
         <div class="category-grid">
 
+            <!-- Phone -->
+
             <a
                 href="products.html?category=phone"
                 class="category-card"
@@ -509,11 +516,13 @@
                 </strong>
 
                 <small>
-                    Phones & accessories
+                    Smartphones & accessories
                 </small>
 
             </a>
 
+
+            <!-- Laptop -->
 
             <a
                 href="products.html?category=laptop"
@@ -535,6 +544,8 @@
             </a>
 
 
+            <!-- Gadgets -->
+
             <a
                 href="products.html?category=gadgets"
                 class="category-card"
@@ -554,6 +565,8 @@
 
             </a>
 
+
+            <!-- Home -->
 
             <a
                 href="products.html?category=home"
@@ -575,6 +588,8 @@
             </a>
 
 
+            <!-- Fashion -->
+
             <a
                 href="products.html?category=fashion"
                 class="category-card"
@@ -594,6 +609,8 @@
 
             </a>
 
+
+            <!-- Beauty -->
 
             <a
                 href="products.html?category=beauty"
@@ -1110,7 +1127,6 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-
     // ==========================================
     // MOBILE MENU
     // ==========================================
@@ -1158,11 +1174,14 @@ document.addEventListener("DOMContentLoaded", function () {
             document.body.classList.add("dark");
 
             if (themeToggle) {
+
                 themeToggle.textContent = "☀️";
+
                 themeToggle.setAttribute(
                     "aria-label",
                     "Switch to light mode"
                 );
+
             }
 
         } else {
@@ -1170,11 +1189,14 @@ document.addEventListener("DOMContentLoaded", function () {
             document.body.classList.remove("dark");
 
             if (themeToggle) {
+
                 themeToggle.textContent = "🌙";
+
                 themeToggle.setAttribute(
                     "aria-label",
                     "Switch to dark mode"
                 );
+
             }
 
         }
@@ -1182,11 +1204,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // Page load হওয়ার সাথে সাথে saved theme apply
     applySavedTheme();
 
 
-    // Theme button
     if (themeToggle) {
 
         themeToggle.addEventListener("click", function () {
@@ -1218,7 +1238,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // PRODUCT SEARCH
+    // SEARCH
     // ==========================================
 
     const searchInput =
@@ -1279,6 +1299,66 @@ document.addEventListener("DOMContentLoaded", function () {
 
             }
         );
+
+    }
+
+
+    // ==========================================
+    // FORMAT PRICE
+    // ==========================================
+
+    function formatPrice(price) {
+
+        if (
+            price === null ||
+            price === undefined ||
+            price === ""
+        ) {
+
+            return "Price unavailable";
+
+        }
+
+
+        const numericPrice =
+            Number(
+                String(price)
+                    .replace(/৳/g, "")
+                    .replace(/,/g, "")
+                    .trim()
+            );
+
+
+        if (!Number.isNaN(numericPrice)) {
+
+            return "৳" +
+                numericPrice.toLocaleString("en-BD");
+
+        }
+
+
+        return String(price);
+
+    }
+
+
+    // ==========================================
+    // ESCAPE HTML
+    // ==========================================
+
+    function escapeHTML(value) {
+
+        return String(value)
+
+            .replace(/&/g, "&amp;")
+
+            .replace(/</g, "&lt;")
+
+            .replace(/>/g, "&gt;")
+
+            .replace(/"/g, "&quot;")
+
+            .replace(/'/g, "&#039;");
 
     }
 
@@ -1349,7 +1429,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            // প্রথম 6টি product
+            /*
+             * প্রথম 6টি product দেখাবে।
+             * পরে চাইলে এখানে random বা
+             * featured=true filter করা যাবে।
+             */
+
             const featured =
                 products.slice(0, 6);
 
@@ -1371,11 +1456,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         "Product";
 
 
-                    const price =
-                        product.price ||
-                        "Price unavailable";
-
-
                     const rating =
                         product.rating ||
                         "N/A";
@@ -1388,7 +1468,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     const icon =
                         product.icon ||
-                        "📱";
+                        "📦";
 
 
                     return `
@@ -1418,7 +1498,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             <div class="product-price">
 
-                                ${escapeHTML(price)}
+                                ${escapeHTML(
+                                    formatPrice(product.price)
+                                )}
 
                             </div>
 
@@ -1518,27 +1600,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // ESCAPE HTML
-    // ==========================================
-
-    function escapeHTML(value) {
-
-        return String(value)
-
-            .replace(/&/g, "&amp;")
-
-            .replace(/</g, "&lt;")
-
-            .replace(/>/g, "&gt;")
-
-            .replace(/"/g, "&quot;")
-
-            .replace(/'/g, "&#039;");
-
-    }
-
-
-    // ==========================================
     // NEWSLETTER
     // ==========================================
 
@@ -1573,7 +1634,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // ==========================================
 
     loadFeaturedProducts();
-
 
 });
 
