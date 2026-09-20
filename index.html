@@ -99,8 +99,8 @@
 
 
             <button
-                class="icon-button mobile-menu-button"
-                id="mobileMenuButton"
+                class="icon-button phone-menu-button"
+                id="phoneMenuButton"
                 type="button"
                 aria-label="Open menu"
                 aria-expanded="false"
@@ -114,9 +114,9 @@
 
 
     <nav
-        class="mobile-nav"
-        id="mobileNav"
-        aria-label="Mobile navigation"
+        class="phone-nav"
+        id="phoneNav"
+        aria-label="phone navigation"
     >
 
         <a href="index.html">
@@ -1115,21 +1115,21 @@ document.addEventListener("DOMContentLoaded", function () {
     // MOBILE MENU
     // ==========================================
 
-    const mobileMenuButton =
-        document.getElementById("mobileMenuButton");
+    const phoneMenuButton =
+        document.getElementById("phoneMenuButton");
 
-    const mobileNav =
-        document.getElementById("mobileNav");
+    const phoneNav =
+        document.getElementById("phoneNav");
 
 
-    if (mobileMenuButton && mobileNav) {
+    if (phoneMenuButton && phoneNav) {
 
-        mobileMenuButton.addEventListener("click", function () {
+        phoneMenuButton.addEventListener("click", function () {
 
             const isOpen =
-                mobileNav.classList.toggle("open");
+                phoneNav.classList.toggle("open");
 
-            mobileMenuButton.setAttribute(
+            phoneMenuButton.setAttribute(
                 "aria-expanded",
                 isOpen ? "true" : "false"
             );
