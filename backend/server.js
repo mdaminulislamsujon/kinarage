@@ -1632,64 +1632,21 @@ app.use(
 // ==========================================
 
 async function startServer() {
+    try {
+        await testDatabaseConnection();
 
-    await testDatabaseConnection();
+        await createTables();
 
-    await createTables();
+        // Insert initial products if database is empty
+        await seedInitialProducts();
 
-    // IMPORTANT:
-    // Empty database হলে initial products insert করবে
-    await seedInitialProducts();
-
-    app.listen(
-        PORT,
-        () => {
-
-            console.log("");
-
-            console.log(
-                "===================================="
-            );
-
-            console.log(
-                "🚀 KinarAge Backend Started"
-            );
-
-            console.log(
-                "===================================="
-            );
-
-            console.log(
-                `🌐 API: http://localhost:${PORT}`
-            );
-
-            console.log(
-                `📦 Products: http://localhost:${PORT}/api/products`
-            );
-
-            console.log(
-                `🖼️ Uploads: http://localhost:${PORT}/uploads/products/`
-            );
-
-            console.log(
-                "🗄️ Database: PostgreSQL"
-            );
-
-            console.log(
-                "🔐 Authentication: JWT"
-            );
-
-            console.log(
-                "👑 Admin API: Protected"
-            );
-
-            console.log(
-                "===================================="
-            );
-
-            console.log("");
-        }
-    );
+        app.listen(PORT, () => {
+            console.log(`🚀 Backend running on port ${PORT}`);
+        });
+    } catch (error) {
+        console.error("❌ Server startup failed:", error);
+        process.exit(1);
+    }
 }
 
 startServer();
