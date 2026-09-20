@@ -2,11 +2,10 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
-const fs = require("fs");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
+const { v2: cloudinary } = require("cloudinary");
 const { Pool } = require("pg");
 
 const app = express();
@@ -20,19 +19,6 @@ const PORT = process.env.PORT || 5000;
 const JWT_SECRET =
     process.env.JWT_SECRET || "CHANGE_THIS_SECRET_IN_ENV";
 
-const FRONTEND_DIR = path.join(__dirname, "..");
-
-const UPLOAD_DIR = path.join(
-    __dirname,
-    "uploads",
-    "products"
-);
-
-// Create upload folder automatically
-fs.mkdirSync(UPLOAD_DIR, {
-    recursive: true
-});
-
 // ==========================================
 // MIDDLEWARE
 // ==========================================
@@ -45,13 +31,15 @@ app.use(express.urlencoded({
     extended: true
 }));
 
-// Serve uploaded images
-app.use(
-    "/uploads",
-    express.static(
-        path.join(__dirname, "uploads")
-    )
-);
+// ==========================================
+// CLOUDINARY
+// ==========================================
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 // ==========================================
 // POSTGRESQL
@@ -69,26 +57,7 @@ const pool = new Pool({
 // MULTER IMAGE UPLOAD
 // ==========================================
 
-const storage = multer.diskStorage({
-
-    destination: function (req, file, cb) {
-        cb(null, UPLOAD_DIR);
-    },
-
-    filename: function (req, file, cb) {
-
-        const extension =
-            path.extname(file.originalname)
-                .toLowerCase();
-
-        const safeName =
-            `product-${Date.now()}-${Math.round(
-                Math.random() * 100000
-            )}${extension}`;
-
-        cb(null, safeName);
-    }
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({
 
@@ -108,6 +77,7 @@ const upload = multer({
         ];
 
         if (!allowedTypes.includes(file.mimetype)) {
+
             return cb(
                 new Error(
                     "Only JPG, PNG, WEBP and GIF images are allowed."
@@ -118,6 +88,38 @@ const upload = multer({
         cb(null, true);
     }
 });
+
+// ==========================================
+// CLOUDINARY UPLOAD HELPER
+// ==========================================
+
+function uploadToCloudinary(file) {
+
+    return new Promise((resolve, reject) => {
+
+        const stream =
+            cloudinary.uploader.upload_stream(
+                {
+                    folder: "kinarage/products",
+                    resource_type: "image"
+                },
+
+                (error, result) => {
+
+                    if (error) {
+
+                        reject(error);
+
+                    } else {
+
+                        resolve(result);
+                    }
+                }
+            );
+
+        stream.end(file.buffer);
+    });
+}
 
 // ==========================================
 // DATABASE CONNECTION
@@ -231,126 +233,152 @@ async function createTables() {
             )
         `);
 
+        // --------------------------------------
+        // INNER SEED FUNCTION
+        // --------------------------------------
 
         async function seedInitialProducts() {
-    try {
-        const existing = await pool.query(
-            "SELECT COUNT(*)::int AS count FROM products"
-        );
 
-        const count = existing.rows[0].count;
+            try {
 
-        if (count > 0) {
-            console.log(`ℹ️ Products already exist: ${count}`);
-            return;
-        }
+                const existing =
+                    await pool.query(
+                        "SELECT COUNT(*)::int AS count FROM products"
+                    );
 
-        const products = [
-            {
-                name: "Galaxy Note Smartphone",
-                category: "mobile",
-                price: "৳19,999",
-                rating: "4.5 ★",
-                value: "9.2/10",
-                processor: "Octa-core 2.2 GHz",
-                battery: "5000 mAh",
-                camera: "50MP Triple",
-                icon: "📱"
-            },
-            {
-                name: "UltraBook Pro 14",
-                category: "laptop",
-                price: "৳65,000",
-                rating: "4.8 ★",
-                value: "9.5/10",
-                processor: "Intel Core i5 12th Gen",
-                battery: "Up to 10 hours",
-                camera: "720p HD Webcam",
-                icon: "💻"
-            },
-            {
-                name: "Wireless ANC Earbuds",
-                category: "gadgets",
-                price: "৳3,499",
-                rating: "4.3 ★",
-                value: "8.9/10",
-                processor: "Bluetooth 5.3",
-                battery: "30h with Case",
-                camera: "N/A",
-                icon: "🎧"
-            },
-            {
-                name: "Smart Fitness Watch",
-                category: "gadgets",
-                price: "৳4,200",
-                rating: "4.6 ★",
-                value: "9.0/10",
-                processor: "RTK Chipset",
-                battery: "7 Days Battery",
-                camera: "N/A",
-                icon: "⌚"
-            },
-            {
-                name: "Smart LED Desk Lamp",
-                category: "home",
-                price: "৳1,800",
-                rating: "4.4 ★",
-                value: "8.8/10",
-                processor: "Touch Control LED",
-                battery: "USB Powered",
-                camera: "N/A",
-                icon: "💡"
-            },
-            {
-                name: "Budget Gaming Laptop",
-                category: "laptop",
-                price: "৳78,000",
-                rating: "4.7 ★",
-                value: "9.1/10",
-                processor: "Ryzen 5 / RTX 3050",
-                battery: "6 hours",
-                camera: "HD Webcam",
-                icon: "💻"
+                const count =
+                    existing.rows[0].count;
+
+                if (count > 0) {
+
+                    console.log(
+                        `ℹ️ Products already exist: ${count}`
+                    );
+
+                    return;
+                }
+
+                const products = [
+
+                    {
+                        name: "Galaxy Note Smartphone",
+                        category: "mobile",
+                        price: "৳19,999",
+                        rating: "4.5 ★",
+                        value: "9.2/10",
+                        processor: "Octa-core 2.2 GHz",
+                        battery: "5000 mAh",
+                        camera: "50MP Triple",
+                        icon: "📱"
+                    },
+
+                    {
+                        name: "UltraBook Pro 14",
+                        category: "laptop",
+                        price: "৳65,000",
+                        rating: "4.8 ★",
+                        value: "9.5/10",
+                        processor: "Intel Core i5 12th Gen",
+                        battery: "Up to 10 hours",
+                        camera: "720p HD Webcam",
+                        icon: "💻"
+                    },
+
+                    {
+                        name: "Wireless ANC Earbuds",
+                        category: "gadgets",
+                        price: "৳3,499",
+                        rating: "4.3 ★",
+                        value: "8.9/10",
+                        processor: "Bluetooth 5.3",
+                        battery: "30h with Case",
+                        camera: "N/A",
+                        icon: "🎧"
+                    },
+
+                    {
+                        name: "Smart Fitness Watch",
+                        category: "gadgets",
+                        price: "৳4,200",
+                        rating: "4.6 ★",
+                        value: "9.0/10",
+                        processor: "RTK Chipset",
+                        battery: "7 Days Battery",
+                        camera: "N/A",
+                        icon: "⌚"
+                    },
+
+                    {
+                        name: "Smart LED Desk Lamp",
+                        category: "home",
+                        price: "৳1,800",
+                        rating: "4.4 ★",
+                        value: "8.8/10",
+                        processor: "Touch Control LED",
+                        battery: "USB Powered",
+                        camera: "N/A",
+                        icon: "💡"
+                    },
+
+                    {
+                        name: "Budget Gaming Laptop",
+                        category: "laptop",
+                        price: "৳78,000",
+                        rating: "4.7 ★",
+                        value: "9.1/10",
+                        processor: "Ryzen 5 / RTX 3050",
+                        battery: "6 hours",
+                        camera: "HD Webcam",
+                        icon: "💻"
+                    }
+                ];
+
+                for (const product of products) {
+
+                    await pool.query(
+                        `
+                        INSERT INTO products
+                        (
+                            name,
+                            category,
+                            price,
+                            rating,
+                            value,
+                            processor,
+                            battery,
+                            camera,
+                            icon
+                        )
+                        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+                        `,
+                        [
+                            product.name,
+                            product.category,
+                            product.price,
+                            product.rating,
+                            product.value,
+                            product.processor,
+                            product.battery,
+                            product.camera,
+                            product.icon
+                        ]
+                    );
+                }
+
+                console.log(
+                    `✅ Seeded ${products.length} initial products`
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "❌ Product seed error:",
+                    error
+                );
+
+                throw error;
             }
-        ];
-
-        for (const product of products) {
-            await pool.query(
-                `
-                INSERT INTO products
-                (
-                    name,
-                    category,
-                    price,
-                    rating,
-                    value,
-                    processor,
-                    battery,
-                    camera,
-                    icon
-                )
-                VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
-                `,
-                [
-                    product.name,
-                    product.category,
-                    product.price,
-                    product.rating,
-                    product.value,
-                    product.processor,
-                    product.battery,
-                    product.camera,
-                    product.icon
-                ]
-            );
         }
-
-        console.log(`✅ Seeded ${products.length} initial products`);
-    } catch (error) {
-        console.error("❌ Product seed error:", error);
-        throw error;
-    }
-}
 
         // --------------------------------------
         // ADMIN USER
@@ -1227,10 +1255,22 @@ app.post(
                 });
             }
 
-            const imageUrl =
-                req.file
-                    ? `/uploads/products/${req.file.filename}`
-                    : null;
+            // ==================================
+            // UPLOAD IMAGE TO CLOUDINARY
+            // ==================================
+
+            let imageUrl = null;
+
+            if (req.file) {
+
+                const uploadedImage =
+                    await uploadToCloudinary(
+                        req.file
+                    );
+
+                imageUrl =
+                    uploadedImage.secure_url;
+            }
 
             const result =
                 await pool.query(
@@ -1370,38 +1410,19 @@ app.put(
             let imageUrl =
                 oldProduct.image_url;
 
+            // ==================================
+            // NEW IMAGE TO CLOUDINARY
+            // ==================================
+
             if (req.file) {
 
+                const uploadedImage =
+                    await uploadToCloudinary(
+                        req.file
+                    );
+
                 imageUrl =
-                    `/uploads/products/${req.file.filename}`;
-
-                // Delete old image
-                if (
-                    oldProduct.image_url &&
-                    oldProduct.image_url.startsWith(
-                        "/uploads/products/"
-                    )
-                ) {
-
-                    const oldFile =
-                        path.join(
-                            __dirname,
-                            oldProduct.image_url
-                                .replace(
-                                    "/uploads/",
-                                    "uploads/"
-                                )
-                        );
-
-                    if (
-                        fs.existsSync(oldFile)
-                    ) {
-
-                        fs.unlinkSync(
-                            oldFile
-                        );
-                    }
-                }
+                    uploadedImage.secure_url;
             }
 
             const result =
@@ -1494,7 +1515,10 @@ app.put(
 
             res.status(500).json({
                 error:
-                    "Failed to update product"
+                    "Failed to update product",
+
+                message:
+                    error.message
             });
         }
     }
@@ -1535,32 +1559,6 @@ app.delete(
             const product =
                 result.rows[0];
 
-            // Delete uploaded image
-            if (
-                product.image_url &&
-                product.image_url.startsWith(
-                    "/uploads/products/"
-                )
-            ) {
-
-                const filePath =
-                    path.join(
-                        __dirname,
-                        product.image_url
-                            .replace(
-                                "/uploads/",
-                                "uploads/"
-                            )
-                    );
-
-                if (
-                    fs.existsSync(filePath)
-                ) {
-
-                    fs.unlinkSync(filePath);
-                }
-            }
-
             res.json({
                 message:
                     "Product deleted successfully",
@@ -1577,7 +1575,10 @@ app.delete(
 
             res.status(500).json({
                 error:
-                    "Failed to delete product"
+                    "Failed to delete product",
+
+                message:
+                    error.message
             });
         }
     }
@@ -1632,7 +1633,9 @@ app.use(
 // ==========================================
 
 async function startServer() {
+
     try {
+
         await testDatabaseConnection();
 
         await createTables();
@@ -1641,10 +1644,20 @@ async function startServer() {
         await seedInitialProducts();
 
         app.listen(PORT, () => {
-            console.log(`🚀 Backend running on port ${PORT}`);
+
+            console.log(
+                `🚀 Backend running on port ${PORT}`
+            );
+
         });
+
     } catch (error) {
-        console.error("❌ Server startup failed:", error);
+
+        console.error(
+            "❌ Server startup failed:",
+            error
+        );
+
         process.exit(1);
     }
 }
