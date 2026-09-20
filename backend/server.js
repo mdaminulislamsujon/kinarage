@@ -308,6 +308,163 @@ async function createTables() {
 }
 
 // ==========================================
+// SEED INITIAL PRODUCTS
+// ==========================================
+
+async function seedInitialProducts() {
+
+    try {
+
+        const existing =
+            await pool.query(
+                "SELECT COUNT(*)::int AS count FROM products"
+            );
+
+        // Products already exist হলে duplicate করবে না
+        if (existing.rows[0].count > 0) {
+
+            console.log(
+                `ℹ️ Products already exist: ${existing.rows[0].count}`
+            );
+
+            return;
+        }
+
+        const products = [
+
+            {
+                name: "Galaxy Note Smartphone",
+                category: "mobile",
+                price: "৳19,999",
+                rating: "4.5 ★",
+                value: "9.2/10",
+                processor: "Octa-core 2.2 GHz",
+                battery: "5000 mAh",
+                camera: "50MP Triple",
+                icon: "📱"
+            },
+
+            {
+                name: "UltraBook Pro 14",
+                category: "laptop",
+                price: "৳65,000",
+                rating: "4.8 ★",
+                value: "9.5/10",
+                processor: "Intel Core i5 12th Gen",
+                battery: "Up to 10 hours",
+                camera: "720p HD Webcam",
+                icon: "💻"
+            },
+
+            {
+                name: "Wireless ANC Earbuds",
+                category: "gadgets",
+                price: "৳3,499",
+                rating: "4.3 ★",
+                value: "8.9/10",
+                processor: "Bluetooth 5.3",
+                battery: "30h with Case",
+                camera: "N/A",
+                icon: "🎧"
+            },
+
+            {
+                name: "Smart Fitness Watch",
+                category: "gadgets",
+                price: "৳4,200",
+                rating: "4.6 ★",
+                value: "9.0/10",
+                processor: "RTK Chipset",
+                battery: "7 Days Battery",
+                camera: "N/A",
+                icon: "⌚"
+            },
+
+            {
+                name: "Smart LED Desk Lamp",
+                category: "home",
+                price: "৳1,800",
+                rating: "4.4 ★",
+                value: "8.8/10",
+                processor: "Touch Control LED",
+                battery: "USB Powered",
+                camera: "N/A",
+                icon: "💡"
+            },
+
+            {
+                name: "Budget Gaming Laptop",
+                category: "laptop",
+                price: "৳78,000",
+                rating: "4.7 ★",
+                value: "9.1/10",
+                processor: "Ryzen 5 / RTX 3050",
+                battery: "6 hours",
+                camera: "HD Webcam",
+                icon: "💻"
+            }
+
+        ];
+
+        for (const product of products) {
+
+            await pool.query(
+                `
+                INSERT INTO products
+                (
+                    name,
+                    category,
+                    price,
+                    rating,
+                    value,
+                    processor,
+                    battery,
+                    camera,
+                    icon
+                )
+                VALUES
+                (
+                    $1,
+                    $2,
+                    $3,
+                    $4,
+                    $5,
+                    $6,
+                    $7,
+                    $8,
+                    $9
+                )
+                `,
+                [
+                    product.name,
+                    product.category,
+                    product.price,
+                    product.rating,
+                    product.value,
+                    product.processor,
+                    product.battery,
+                    product.camera,
+                    product.icon
+                ]
+            );
+        }
+
+        console.log(
+            `✅ Seeded ${products.length} initial products`
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ Product seed error:",
+            error.message
+        );
+
+        throw error;
+    }
+}
+
+// ==========================================
 // JWT HELPERS
 // ==========================================
 
@@ -319,7 +476,9 @@ function createToken(user) {
             email: user.email,
             role: user.role
         },
+
         JWT_SECRET,
+
         {
             expiresIn: "7d"
         }
@@ -985,21 +1144,30 @@ app.post(
                     `,
                     [
                         name.trim(),
+
                         category
                             .trim()
                             .toLowerCase(),
+
                         price.trim(),
+
                         rating ||
                             "4.5 ★",
+
                         value ||
                             "9.0/10",
+
                         processor ||
                             "N/A",
+
                         battery ||
                             "N/A",
+
                         camera ||
                             "N/A",
+
                         "📦",
+
                         imageUrl
                     ]
                 );
@@ -1007,6 +1175,7 @@ app.post(
             res.status(201).json({
                 message:
                     "Product added successfully",
+
                 product:
                     result.rows[0]
             });
@@ -1021,6 +1190,7 @@ app.post(
             res.status(500).json({
                 error:
                     "Failed to add product",
+
                 message:
                     error.message
             });
@@ -1189,6 +1359,7 @@ app.put(
             res.json({
                 message:
                     "Product updated successfully",
+
                 product:
                     result.rows[0]
             });
@@ -1265,15 +1436,14 @@ app.delete(
                     fs.existsSync(filePath)
                 ) {
 
-                    fs.unlinkSync(
-                        filePath
-                    );
+                    fs.unlinkSync(filePath);
                 }
             }
 
             res.json({
                 message:
                     "Product deleted successfully",
+
                 product
             });
 
@@ -1346,17 +1516,24 @@ async function startServer() {
 
     await createTables();
 
+    // IMPORTANT:
+    // Empty database হলে initial products insert করবে
+    await seedInitialProducts();
+
     app.listen(
         PORT,
         () => {
 
             console.log("");
+
             console.log(
                 "===================================="
             );
+
             console.log(
                 "🚀 KinarAge Backend Started"
             );
+
             console.log(
                 "===================================="
             );
@@ -1388,6 +1565,7 @@ async function startServer() {
             console.log(
                 "===================================="
             );
+
             console.log("");
         }
     );
